@@ -15,7 +15,7 @@ namespace Image_filtering
     public static class ImageFilters
     {
 
-        public static BitmapSource Invert(BitmapSource source)
+        public static WriteableBitmap Invert(WriteableBitmap source)
         {
             int height = source.PixelHeight;
             int width = source.PixelWidth;
@@ -33,11 +33,11 @@ namespace Image_filtering
                 pixelData[i + 2] = (byte)(255 - pixelData[i + 2]); // Red
             }
 
-            return BitmapSource.Create(width, height, source.DpiX, source.DpiY,
-                                   PixelFormats.Bgra32, null, pixelData, stride);
+            return new WriteableBitmap(BitmapSource.Create(width, height, source.DpiX, source.DpiY,
+                                   PixelFormats.Bgra32, null, pixelData, stride));
         }
 
-        public static BitmapSource IncreaseBrightness(BitmapSource source, int brightness)
+        public static WriteableBitmap IncreaseBrightness(WriteableBitmap source, int brightness)
         {
             int height = source.PixelHeight;
             int width = source.PixelWidth;
@@ -53,11 +53,11 @@ namespace Image_filtering
                 pixelData[i + 2] = (byte)Math.Max(0, Math.Min(255, pixelData[i + 2] + brightness)); // Red
             }
 
-            return BitmapSource.Create(width, height, source.DpiX, source.DpiY,
-                                   PixelFormats.Bgra32, null, pixelData, stride);
+            return new WriteableBitmap(BitmapSource.Create(width, height, source.DpiX, source.DpiY,
+                                   PixelFormats.Bgra32, null, pixelData, stride));
         }
 
-        public static BitmapSource EnhanceContrast(BitmapSource source, int contrast)
+        public static WriteableBitmap EnhanceContrast(WriteableBitmap source, int contrast)
         {
             int height = source.PixelHeight;
             int width = source.PixelWidth;
@@ -75,11 +75,11 @@ namespace Image_filtering
                 pixelData[i + 2] = (byte)Math.Max(0, Math.Min(255, factor * (pixelData[i + 2] - 128) + 128)); // Red
             }
 
-            return BitmapSource.Create(width, height, source.DpiX, source.DpiY,
-                                   PixelFormats.Bgra32, null, pixelData, stride);
+            return new WriteableBitmap(BitmapSource.Create(width, height, source.DpiX, source.DpiY,
+                                   PixelFormats.Bgra32, null, pixelData, stride));
         }
 
-        public static BitmapSource GammaCorrection(BitmapSource source, double gamma)
+        public static WriteableBitmap GammaCorrection(WriteableBitmap source, double gamma)
         {
             int height = source.PixelHeight;
             int width = source.PixelWidth;
@@ -95,8 +95,8 @@ namespace Image_filtering
                 pixelData[i + 2] = (byte)Math.Max(0, Math.Min(255, (int)(255 * Math.Pow(pixelData[i + 2] / 255.0, gamma)))); // Red
             }
 
-            return BitmapSource.Create(width, height, source.DpiX, source.DpiY,
-                                   PixelFormats.Bgra32, null, pixelData, stride);
+            return new WriteableBitmap(BitmapSource.Create(width, height, source.DpiX, source.DpiY,
+                                   PixelFormats.Bgra32, null, pixelData, stride));
         }
 
     }

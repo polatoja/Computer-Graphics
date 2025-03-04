@@ -33,7 +33,7 @@ namespace Image_filtering
             return kernel;
         }
 
-        public static BitmapSource ApplyConvolutionFilter(BitmapSource source, double[,] kernel)
+        public static WriteableBitmap ApplyConvolutionFilter(WriteableBitmap source, double[,] kernel)
         {
             int height = source.PixelHeight;
             int width = source.PixelWidth;
@@ -63,32 +63,43 @@ namespace Image_filtering
 
                             double weight = kernel[ky + offset, kx + offset];
 
+                            string debugMessage = $"Before Blur:\n" +
+                                      $"B: {pixelData[index]}\n" +
+                                      $"G: {pixelData[index + 1]}\n" +
+                                      $"R: {pixelData[index + 2]}\n";
+                            MessageBox.Show(debugMessage, "Blur Debug Info", MessageBoxButton.OK, MessageBoxImage.Information);
+
                             sum[0] += pixelData[index] * weight;      // Blue
                             sum[1] += pixelData[index + 1] * weight;  // Green
-                            sum[2] += pixelData[index + 2] * weight;  // Redb 
+                            sum[2] += pixelData[index + 2] * weight;  // Red
+
+                            string debugMessage2 = $"After Blur:\n" +
+                                       $"B: {sum[0]:F2}\n" +
+                                       $"G: {sum[1]:F2}\n" +
+                                       $"R: {sum[2]:F2}";
+                            MessageBox.Show(debugMessage2, "Blur Debug Info", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
 
                     // Set new pixel values
                     int newIndex = (y * stride) + (x * 4);
-                    resultData[newIndex] = Clamp(sum[0]); // (byte)Math.Clamp(sum[0], 0, 255);
-                    resultData[newIndex + 1] = Clamp(sum[1]); // (byte)Math.Clamp(sum[1], 0, 255);
-                    resultData[newIndex + 2] = Clamp(sum[2]); // (byte)Math.Clamp(sum[2], 0, 255);
+                    resultData[newIndex] = (byte)Math.Clamp((int)sum[0], 0, 255);
+                    resultData[newIndex + 1] = (byte)Math.Clamp((int)sum[1], 0, 255);
+                    resultData[newIndex + 2] = (byte)Math.Clamp((int)sum[2], 0, 255);
                     resultData[newIndex + 3] = pixelData[newIndex + 3]; // Keep alpha
                 }
             }
 
-
-            return BitmapSource.Create(width, height, source.DpiX, source.DpiY,
-                                       PixelFormats.Bgra32, null, resultData, stride);
+            return new WriteableBitmap(BitmapSource.Create(width, height, source.DpiX, source.DpiY,
+                                       PixelFormats.Bgra32, null, resultData, stride));
         }
 
-        public static BitmapSource ApplyBlurFromFile(BitmapSource source, string filePath)
+
+
+        public static WriteableBitmap ApplyBlurFromFile(WriteableBitmap source, string filePath)
         {
             double[,] kernel = LoadKernelFromFile(filePath);
             return ApplyConvolutionFilter(source, kernel);
         }
-
-        private static byte Clamp(double value) => (byte)(value < 0 ? 0 : (value > 255 ? 255 : value));
     }
 }

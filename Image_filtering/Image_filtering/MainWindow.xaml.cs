@@ -60,7 +60,7 @@ namespace Image_filtering
                 try
                 {
                     // Convert ImageSource to BitmapSource
-                    BitmapSource bitmapSource = (BitmapSource)ModifiedImage.Source;
+                    WriteableBitmap bitmapSource = (WriteableBitmap)ModifiedImage.Source;
 
                     // Encode the image based on file type
                     BitmapEncoder encoder;
@@ -109,7 +109,7 @@ namespace Image_filtering
             if (ModifiedImage.Source == null)
                 return;
             
-            ModifiedImage.Source = ImageFilters.Invert((BitmapSource)ModifiedImage.Source);
+            ModifiedImage.Source = ImageFilters.Invert((WriteableBitmap)ModifiedImage.Source);
         }
 
         private void Brigtness_Click(object sender, RoutedEventArgs e)
@@ -118,7 +118,7 @@ namespace Image_filtering
                 return;
 
             int brightness = 20;
-            ModifiedImage.Source = ImageFilters.IncreaseBrightness((BitmapSource)ModifiedImage.Source, brightness);
+            ModifiedImage.Source = ImageFilters.IncreaseBrightness((WriteableBitmap)ModifiedImage.Source, brightness);
         }
 
         private void Contrast_Click(object sender, RoutedEventArgs e)
@@ -127,7 +127,7 @@ namespace Image_filtering
                 return;
 
             int contrast = 30;
-            ModifiedImage.Source = ImageFilters.EnhanceContrast((BitmapSource)ModifiedImage.Source, contrast);
+            ModifiedImage.Source = ImageFilters.EnhanceContrast((WriteableBitmap)ModifiedImage.Source, contrast);
         }
 
         private void Gamma_Click(object sender, RoutedEventArgs e)
@@ -136,7 +136,7 @@ namespace Image_filtering
                 return;
 
             double gamma = 1.2;
-            ModifiedImage.Source = ImageFilters.GammaCorrection((BitmapSource)ModifiedImage.Source, gamma);
+            ModifiedImage.Source = ImageFilters.GammaCorrection((WriteableBitmap)ModifiedImage.Source, gamma);
         }
 
         private void Blur_Click(object sender, RoutedEventArgs e)
@@ -144,7 +144,7 @@ namespace Image_filtering
             if (ModifiedImage.Source == null)
                 return;
 
-            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Blur.conv");
+            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters", "Blur.conv");
             filePath = System.IO.Path.GetFullPath(filePath);
 
             if (!File.Exists(filePath))
@@ -153,7 +153,7 @@ namespace Image_filtering
                 return;
             }
 
-            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((BitmapSource)ModifiedImage.Source, filePath);
+            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
         }
     }
 }
