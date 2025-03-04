@@ -63,21 +63,9 @@ namespace Image_filtering
 
                             double weight = kernel[ky + offset, kx + offset];
 
-                            string debugMessage = $"Before Blur:\n" +
-                                      $"B: {pixelData[index]}\n" +
-                                      $"G: {pixelData[index + 1]}\n" +
-                                      $"R: {pixelData[index + 2]}\n";
-                            MessageBox.Show(debugMessage, "Blur Debug Info", MessageBoxButton.OK, MessageBoxImage.Information);
-
                             sum[0] += pixelData[index] * weight;      // Blue
                             sum[1] += pixelData[index + 1] * weight;  // Green
                             sum[2] += pixelData[index + 2] * weight;  // Red
-
-                            string debugMessage2 = $"After Blur:\n" +
-                                       $"B: {sum[0]:F2}\n" +
-                                       $"G: {sum[1]:F2}\n" +
-                                       $"R: {sum[2]:F2}";
-                            MessageBox.Show(debugMessage2, "Blur Debug Info", MessageBoxButton.OK, MessageBoxImage.Information);
                         }
                     }
 
