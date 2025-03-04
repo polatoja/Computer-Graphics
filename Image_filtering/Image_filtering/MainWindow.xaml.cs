@@ -155,5 +155,73 @@ namespace Image_filtering
 
             ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
         }
+
+        private void Sharpen_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+
+            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters", "Sharpen.conv");
+            filePath = System.IO.Path.GetFullPath(filePath);
+
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show($"Kernel file not found at: {filePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
+        }
+
+        private void Gaussian_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+
+            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters", "GaussianBlur.conv");
+            filePath = System.IO.Path.GetFullPath(filePath);
+
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show($"Kernel file not found at: {filePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
+        }
+
+        private void Edge_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+
+            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters", "EdgeDetection.conv");
+            filePath = System.IO.Path.GetFullPath(filePath);
+
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show($"Kernel file not found at: {filePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
+        }
+
+        private void Emboss_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+
+            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters", "Emboss.conv");
+            filePath = System.IO.Path.GetFullPath(filePath);
+
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show($"Kernel file not found at: {filePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
+        }
     }
 }

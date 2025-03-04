@@ -43,6 +43,14 @@
             
             <Button x:Name="Blur" Content="Blur"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="Blur_Click"/>
+            <Button x:Name="Sharpen" Content="Sharpen"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="Sharpen_Click"/>
+            <Button x:Name="Gaussian" Content="Gaussian Blur"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="Gaussian_Click"/>
+            <Button x:Name="EdgeDetection" Content="EdgeDetection"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="Edge_Click"/>
+            <Button x:Name="Emboss" Content="Emboss"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="Emboss_Click"/>
 
         </StackPanel>
 
