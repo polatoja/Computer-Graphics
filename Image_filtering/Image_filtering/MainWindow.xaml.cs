@@ -144,15 +144,16 @@ namespace Image_filtering
             if (ModifiedImage.Source == null)
                 return;
 
-            string filePath = "Blur.conv"; // Make sure the file is in the correct location
+            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Blur.conv");
+            filePath = System.IO.Path.GetFullPath(filePath);
 
             if (!File.Exists(filePath))
             {
-                MessageBox.Show("Kernel file not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Kernel file not found at: {filePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            ModifiedImage.Source = ImageFilters.ApplyBlurFromFile((BitmapSource)ModifiedImage.Source, filePath);
+            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((BitmapSource)ModifiedImage.Source, filePath);
         }
     }
 }
