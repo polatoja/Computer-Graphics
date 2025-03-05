@@ -11,9 +11,17 @@
 
             <!-- Input for kernel width and height -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Size:" VerticalAlignment="Center" Margin="10"/>
                 <TextBox x:Name="KernelWidthBox" Width="50" Text="3" Margin="5"/>
                 <TextBlock Text="×" VerticalAlignment="Center"/>
                 <TextBox x:Name="KernelHeightBox" Width="50" Text="3" Margin="5"/>
+
+                <TextBlock Text="Divisor:" VerticalAlignment="Center"/>
+                <TextBox x:Name="KernelDivisorBox" Width="50" Text="1" Margin="5"/>
+
+                <TextBlock Text="Offset:" VerticalAlignment="Center"/>
+                <TextBox x:Name="OffsetBox" Width="50" Text="1" Margin="5"/>
+                
                 <Button Content="Generate" Click="GenerateKernel_Click" Margin="5"/>
             </StackPanel>
 

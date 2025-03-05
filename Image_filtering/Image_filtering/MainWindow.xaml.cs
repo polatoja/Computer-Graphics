@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static Image_filtering.CustomConvFilter;
+using static Image_filtering.ConvolutionFilters;
 
 namespace Image_filtering
 {
@@ -223,20 +223,19 @@ namespace Image_filtering
 
         private void ShowKernel_Click(object sender, RoutedEventArgs e)
         {
-            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters", "Blur.conv");
-            filePath = System.IO.Path.GetFullPath(filePath);
-
-            if (!File.Exists(filePath))
-            {
-                MessageBox.Show($"Kernel file not found at: {filePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            double[,] kernel = ConvolutionFilters.LoadKernelFromFile(filePath);
-
             KernelWindow kernelWindow = new KernelWindow();
             kernelWindow.Owner = this;
-            kernelWindow.ShowDialog();
+
+            if (kernelWindow.ShowDialog() == true)
+            {
+                Kernel customKernel = kernelWindow.SelectedKernel;
+
+                if (customKernel.KernelValues != null && ModifiedImage.Source is WriteableBitmap writableBitmap)
+                {
+                    ModifiedImage.Source = ConvolutionFilters.ApplyConvolutionFilter(writableBitmap, customKernel);
+                }
+            }
         }
+
     }
 }

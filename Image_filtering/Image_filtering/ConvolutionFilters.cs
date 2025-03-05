@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,27 +14,67 @@ namespace Image_filtering
 {
     public static class ConvolutionFilters
     {
-        public static double[,] LoadKernelFromFile(string filePath)
+        public struct Kernel
+        {
+            public double[,] KernelValues { get; }
+            public int Rows { get; }
+            public int Cols { get; }
+            public int OffsetX { get; }
+            public int OffsetY { get; }
+            public Kernel(double[,] kernel, int rows, int cols, int offsetX, int offsetY)
+            {
+                KernelValues = kernel;
+                Rows = rows;
+                Cols = cols;
+                OffsetX = offsetX;
+                OffsetY = offsetY;
+            }
+            public Kernel(double[,] kernel, int rows, int cols)
+            {
+                KernelValues = kernel;
+                Rows = rows;
+                Cols = cols;
+                OffsetX = cols / 2;
+                OffsetY = rows / 2;
+            }
+        }
+
+        public static Kernel LoadKernelFromFile(string filePath)
         {
             if (!File.Exists(filePath))
                 throw new FileNotFoundException($"Kernel file not found: {filePath}");
 
             string[] lines = File.ReadAllLines(filePath);
-            double[,] kernel = new double[3, 3];
-
-            for (int i = 0; i < 3; i++)
+            string[] sizeInfo = lines[0].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (sizeInfo.Length != 2 ||
+                !int.TryParse(sizeInfo[0], out int rows) ||
+                !int.TryParse(sizeInfo[1], out int cols))
             {
-                string[] values = lines[i].Split(new[] { ' ', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int j = 0; j < 3; j++)
+                throw new FormatException("Invalid kernel size format. First line should contain two integers: rows and columns.");
+            }
+
+            double[,] kernelValues = new double[rows, cols];
+
+            for (int i = 0; i < rows; i++)
+            {
+                string[] values = lines[i + 1].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (values.Length != cols)
+                    throw new FormatException($"Invalid row format at line {i + 2}. Expected {cols} values.");
+
+                for (int j = 0; j < cols; j++)
                 {
-                    kernel[i, j] = double.Parse(values[j], CultureInfo.InvariantCulture);
+                    if (!double.TryParse(values[j], NumberStyles.Float, CultureInfo.InvariantCulture, out kernelValues[i, j]))
+                    {
+                        throw new FormatException($"Invalid number at row {i + 1}, column {j + 1}.");
+                    }
                 }
             }
 
-            return kernel;
+            return new Kernel(kernelValues, rows, cols);
         }
 
-        public static WriteableBitmap ApplyConvolutionFilter(WriteableBitmap source, double[,] kernel)
+
+        public static WriteableBitmap ApplyConvolutionFilter(WriteableBitmap source, Kernel kernel)
         {
             int height = source.PixelHeight;
             int width = source.PixelWidth;
@@ -43,25 +84,25 @@ namespace Image_filtering
 
             source.CopyPixels(pixelData, stride, 0);
 
-            int kernelSize = 3;
-            int offset = kernelSize / 2;
+            int offset_x = kernel.OffsetX;
+            int offset_y = kernel.OffsetY;
 
-            for (int y = offset; y < height - offset; y++)
+            for (int y = offset_y; y < height - offset_y; y++)
             {
-                for (int x = offset; x < width - offset; x++)
+                for (int x = offset_x; x < width - offset_x; x++)
                 {
                     double[] sum = new double[3]; // R, G, B channels
 
                     // Apply kernel
-                    for (int ky = -offset; ky <= offset; ky++)
+                    for (int ky = -offset_y; ky <= offset_y; ky++)
                     {
-                        for (int kx = -offset; kx <= offset; kx++)
+                        for (int kx = -offset_x; kx <= offset_x; kx++)
                         {
                             int pixelX = x + kx;
                             int pixelY = y + ky;
                             int index = (pixelY * stride) + (pixelX * 4); // 4 bytes per pixel
 
-                            double weight = kernel[ky + offset, kx + offset];
+                            double weight = kernel.KernelValues[ky + offset_y, kx + offset_x];
 
                             sum[0] += pixelData[index] * weight;      // Blue
                             sum[1] += pixelData[index + 1] * weight;  // Green
@@ -83,7 +124,7 @@ namespace Image_filtering
 
         public static WriteableBitmap ApplyFromFile(WriteableBitmap source, string filePath)
         {
-            double[,] kernel = LoadKernelFromFile(filePath);
+            Kernel kernel = LoadKernelFromFile(filePath);
             return ApplyConvolutionFilter(source, kernel);
         }
 

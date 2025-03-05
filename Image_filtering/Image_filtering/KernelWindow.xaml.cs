@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using static Image_filtering.ConvolutionFilters;
 
 namespace Image_filtering
 {
@@ -10,7 +11,10 @@ namespace Image_filtering
     {
         private int kernelWidth = 3;
         private int kernelHeight = 3;
-        private TextBox[,] kernelInputs; // Stores references to all textboxes in the grid
+        private int kernelDivisor = 1;
+        private int kernelOffset = 1;
+        private TextBox[,] kernelInputs;
+        public Kernel SelectedKernel { get; private set; }
 
         public KernelWindow()
         {
@@ -19,10 +23,24 @@ namespace Image_filtering
 
         private void GenerateKernel_Click(object sender, RoutedEventArgs e)
         {
-            if (!int.TryParse(KernelWidthBox.Text, out kernelWidth) || kernelWidth < 1 || kernelWidth > 9 ||
-                !int.TryParse(KernelHeightBox.Text, out kernelHeight) || kernelHeight < 1 || kernelHeight > 9)
+            if (!int.TryParse(KernelWidthBox.Text, out kernelWidth) || kernelWidth < 1 || kernelWidth > 9 || kernelWidth % 2 == 0 ||
+                !int.TryParse(KernelHeightBox.Text, out kernelHeight) || kernelHeight < 1 || kernelHeight > 9 || kernelHeight % 2 == 0)
             {
-                MessageBox.Show("Please enter valid kernel dimensions (1-9 in both directions).",
+                MessageBox.Show("Please enter valid kernel dimensions (1-9 ODD values in both directions).",
+                                "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(OffsetBox.Text, out kernelOffset) || kernelOffset == 0)
+            {
+                MessageBox.Show("Please enter valid kernel divisor",
+                                "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            if (!int.TryParse(KernelDivisorBox.Text, out kernelDivisor) || kernelDivisor == 0)
+            {
+                MessageBox.Show("Please enter valid kernel divisor",
                                 "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
@@ -58,23 +76,24 @@ namespace Image_filtering
             }
         }
 
-        public double[,] GetKernelValues()
+        public Kernel GetKernelValues()
         {
-            double[,] kernel = new double[kernelHeight, kernelWidth];
+            double[,] kernelValues = new double[kernelHeight, kernelWidth];
 
             for (int row = 0; row < kernelHeight; row++)
             {
                 for (int col = 0; col < kernelWidth; col++)
                 {
-                    if (!double.TryParse(kernelInputs[row, col].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out kernel[row, col]))
+                    if (!double.TryParse(kernelInputs[row, col].Text, NumberStyles.Float, CultureInfo.InvariantCulture, out kernelValues[row, col]))
                     {
                         MessageBox.Show("Invalid kernel values detected. Please enter numbers only.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return null;
+                        return default;
                     }
+                    kernelValues[row, col] /= kernelDivisor;
                 }
             }
 
-            return kernel;
+            return new Kernel(kernelValues, kernelHeight, kernelWidth, kernelOffset, kernelOffset);
         }
 
         private void Close_Click(object sender, RoutedEventArgs e)
@@ -87,7 +106,13 @@ namespace Image_filtering
             if (kernelInputs == null)
                 return;
 
-            double[,] kernel = GetKernelValues();
+            Kernel kernel = GetKernelValues();
+            if (kernel.KernelValues == null)
+                return;
+
+            SelectedKernel = kernel;
+            DialogResult = true;
+            this.Close();
         }
     }
 }
