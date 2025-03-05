@@ -1,0 +1,34 @@
+﻿<Window x:Class="Image_filtering.KernelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Convolution Kernel" Height="500" Width="600"
+        WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
+        Topmost="True">
+
+    <Grid Margin="10">
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+            <TextBlock Text="Kernel Size (Width × Height)" FontWeight="Bold" Margin="5"/>
+
+            <!-- Input for kernel width and height -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBox x:Name="KernelWidthBox" Width="50" Text="3" Margin="5"/>
+                <TextBlock Text="×" VerticalAlignment="Center"/>
+                <TextBox x:Name="KernelHeightBox" Width="50" Text="3" Margin="5"/>
+                <Button Content="Generate" Click="GenerateKernel_Click" Margin="5"/>
+            </StackPanel>
+
+            <!-- Grid for entering kernel coefficients -->
+            <ScrollViewer Height="300" Width="550">
+                <Grid x:Name="KernelGrid"/>
+            </ScrollViewer>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Close" Click="Close_Click" HorizontalAlignment="Center"
+                VerticalAlignment="Bottom" Margin="5"/>
+            <Button Content="Apply" Click="Apply_Click" HorizontalAlignment="Center"
+                VerticalAlignment="Bottom" Margin="5"/>
+        </StackPanel>
+        
+    </Grid>
+</Window>

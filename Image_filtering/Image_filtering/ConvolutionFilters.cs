@@ -69,12 +69,11 @@ namespace Image_filtering
                         }
                     }
 
-                    // Set new pixel values
                     int newIndex = (y * stride) + (x * 4);
                     resultData[newIndex] = (byte)Math.Clamp((int)sum[0], 0, 255);
                     resultData[newIndex + 1] = (byte)Math.Clamp((int)sum[1], 0, 255);
                     resultData[newIndex + 2] = (byte)Math.Clamp((int)sum[2], 0, 255);
-                    resultData[newIndex + 3] = pixelData[newIndex + 3]; // Keep alpha
+                    resultData[newIndex + 3] = pixelData[newIndex + 3]; // alpha
                 }
             }
 
@@ -82,12 +81,11 @@ namespace Image_filtering
                                        PixelFormats.Bgra32, null, resultData, stride));
         }
 
-
-
-        public static WriteableBitmap ApplyBlurFromFile(WriteableBitmap source, string filePath)
+        public static WriteableBitmap ApplyFromFile(WriteableBitmap source, string filePath)
         {
             double[,] kernel = LoadKernelFromFile(filePath);
             return ApplyConvolutionFilter(source, kernel);
         }
+
     }
 }

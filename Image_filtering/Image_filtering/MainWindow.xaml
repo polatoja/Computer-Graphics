@@ -37,10 +37,10 @@
 
             <Button x:Name="ContrastEnhacement" Content="Contrast"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="Contrast_Click"/>
-            
+
             <Button x:Name="GammaCorrection" Content="Gamma"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="Gamma_Click"/>
-            
+
             <Button x:Name="Blur" Content="Blur"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="Blur_Click"/>
             <Button x:Name="Sharpen" Content="Sharpen"
@@ -51,6 +51,9 @@
                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="Edge_Click"/>
             <Button x:Name="Emboss" Content="Emboss"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="Emboss_Click"/>
+
+            <Button x:Name="ShowKernel" Content="Custom Filter"
+                HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Click="ShowKernel_Click"/>
 
         </StackPanel>
 

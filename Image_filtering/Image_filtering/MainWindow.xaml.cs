@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static Image_filtering.CustomConvFilter;
 
 namespace Image_filtering
 {
@@ -47,7 +48,6 @@ namespace Image_filtering
                 return;
             }
 
-            // Open Save File Dialog
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
                 Filter = "PNG Image|*.png|JPEG Image|*.jpg|Bitmap Image|*.bmp",
@@ -59,10 +59,8 @@ namespace Image_filtering
             {
                 try
                 {
-                    // Convert ImageSource to BitmapSource
                     WriteableBitmap bitmapSource = (WriteableBitmap)ModifiedImage.Source;
 
-                    // Encode the image based on file type
                     BitmapEncoder encoder;
                     string extension = System.IO.Path.GetExtension(saveFileDialog.FileName).ToLower();
                     switch (extension)
@@ -81,7 +79,6 @@ namespace Image_filtering
 
                     encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
 
-                    // Save the file
                     using (FileStream fileStream = new FileStream(saveFileDialog.FileName, FileMode.Create))
                     {
                         encoder.Save(fileStream);
@@ -153,7 +150,7 @@ namespace Image_filtering
                 return;
             }
 
-            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
+            ModifiedImage.Source = ConvolutionFilters.ApplyFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
         }
 
         private void Sharpen_Click(object sender, RoutedEventArgs e)
@@ -170,7 +167,7 @@ namespace Image_filtering
                 return;
             }
 
-            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
+            ModifiedImage.Source = ConvolutionFilters.ApplyFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
         }
 
         private void Gaussian_Click(object sender, RoutedEventArgs e)
@@ -187,7 +184,7 @@ namespace Image_filtering
                 return;
             }
 
-            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
+            ModifiedImage.Source = ConvolutionFilters.ApplyFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
         }
 
         private void Edge_Click(object sender, RoutedEventArgs e)
@@ -204,7 +201,7 @@ namespace Image_filtering
                 return;
             }
 
-            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
+            ModifiedImage.Source = ConvolutionFilters.ApplyFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
         }
 
         private void Emboss_Click(object sender, RoutedEventArgs e)
@@ -221,7 +218,25 @@ namespace Image_filtering
                 return;
             }
 
-            ModifiedImage.Source = ConvolutionFilters.ApplyBlurFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
+            ModifiedImage.Source = ConvolutionFilters.ApplyFromFile((WriteableBitmap)ModifiedImage.Source, filePath);
+        }
+
+        private void ShowKernel_Click(object sender, RoutedEventArgs e)
+        {
+            string filePath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters", "Blur.conv");
+            filePath = System.IO.Path.GetFullPath(filePath);
+
+            if (!File.Exists(filePath))
+            {
+                MessageBox.Show($"Kernel file not found at: {filePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            double[,] kernel = ConvolutionFilters.LoadKernelFromFile(filePath);
+
+            KernelWindow kernelWindow = new KernelWindow();
+            kernelWindow.Owner = this;
+            kernelWindow.ShowDialog();
         }
     }
 }
