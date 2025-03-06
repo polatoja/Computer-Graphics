@@ -31,20 +31,6 @@ namespace Image_filtering
                 return;
             }
 
-            if (!int.TryParse(OffsetBox.Text, out kernelOffset) || kernelOffset == 0)
-            {
-                MessageBox.Show("Please enter valid kernel divisor",
-                                "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            if (!int.TryParse(KernelDivisorBox.Text, out kernelDivisor) || kernelDivisor == 0)
-            {
-                MessageBox.Show("Please enter valid kernel divisor",
-                                "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
             KernelGrid.Children.Clear();
             KernelGrid.RowDefinitions.Clear();
             KernelGrid.ColumnDefinitions.Clear();
@@ -62,9 +48,10 @@ namespace Image_filtering
                         Text = "0",
                         Width = 50,
                         Height = 30,
-                        Margin = new Thickness(5),
+                        Margin = new Thickness(2),
                         HorizontalAlignment = HorizontalAlignment.Center,
-                        VerticalAlignment = VerticalAlignment.Center
+                        VerticalAlignment = VerticalAlignment.Center,
+                        TextAlignment = TextAlignment.Center
                     };
 
                     Grid.SetRow(inputBox, row);
@@ -79,6 +66,18 @@ namespace Image_filtering
         public Kernel GetKernelValues()
         {
             double[,] kernelValues = new double[kernelHeight, kernelWidth];
+
+            if (!int.TryParse(OffsetBox.Text, out kernelOffset) || kernelOffset == 0)
+            {
+                MessageBox.Show("Please enter valid kernel divisor",
+                                "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+            if (!int.TryParse(KernelDivisorBox.Text, out kernelDivisor) || kernelDivisor == 0)
+            {
+                MessageBox.Show("Please enter valid kernel divisor",
+                                "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
 
             for (int row = 0; row < kernelHeight; row++)
             {

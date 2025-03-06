@@ -21,7 +21,7 @@
 
                 <TextBlock Text="Offset:" VerticalAlignment="Center"/>
                 <TextBox x:Name="OffsetBox" Width="50" Text="1" Margin="5"/>
-                
+
                 <Button Content="Generate" Click="GenerateKernel_Click" Margin="5"/>
             </StackPanel>
 
@@ -37,6 +37,6 @@
             <Button Content="Apply" Click="Apply_Click" HorizontalAlignment="Center"
                 VerticalAlignment="Bottom" Margin="5"/>
         </StackPanel>
-        
+
     </Grid>
 </Window>

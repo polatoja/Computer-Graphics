@@ -109,7 +109,7 @@ namespace Image_filtering
             ModifiedImage.Source = ImageFilters.Invert((WriteableBitmap)ModifiedImage.Source);
         }
 
-        private void Brigtness_Click(object sender, RoutedEventArgs e)
+        private void Brightness_Click(object sender, RoutedEventArgs e)
         {
             if (ModifiedImage.Source == null)
                 return;
@@ -237,5 +237,78 @@ namespace Image_filtering
             }
         }
 
+        private void SavedFilters_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+
+            string filtersPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters");
+
+            if (!Directory.Exists(filtersPath))
+            {
+                MessageBox.Show("Filter directory not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                InitialDirectory = filtersPath,
+                Filter = "Convolution Filters (*.conv)|*.conv*",
+                Title = "Select a Filter"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+                MessageBox.Show("You are amazing!!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                /*
+                try
+                {
+                    string[] filterData = File.ReadAllLines(filePath);
+
+                    LoadFilter(filterData);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading the filter: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                */
+            }
+        }
+
+        private void LoadFilter(string[] filterData)
+        {
+            int rows = filterData.Length;
+            int cols = filterData[0].Split(' ').Length;
+            double[,] kernelValues = new double[rows, cols];
+
+            for (int i = 0; i < rows; i++)
+            {
+                var values = filterData[i].Split(' ').Select(double.Parse).ToArray();
+                for (int j = 0; j < cols; j++)
+                {
+                    kernelValues[i, j] = values[j];
+                }
+            }
+
+            Kernel selectedKernel = new Kernel(kernelValues, rows, cols);
+            MessageBox.Show("Filter loaded successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ChangeAnchor_Click(object sender, RoutedEventArgs e)
+        {
+            AnchorWindow anchorWindow = new AnchorWindow();
+            anchorWindow.Owner = this;
+
+            if (anchorWindow.ShowDialog() == true)
+            {
+                Kernel customKernel = anchorWindow.SelectedKernel;
+
+                if (customKernel.KernelValues != null && ModifiedImage.Source is WriteableBitmap writableBitmap)
+                {
+                    ModifiedImage.Source = ConvolutionFilters.ApplyConvolutionFilter(writableBitmap, customKernel);
+                }
+            }
+        }
     }
 }
