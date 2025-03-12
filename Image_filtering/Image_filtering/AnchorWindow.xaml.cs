@@ -21,7 +21,6 @@ namespace Image_filtering
             GenerateGrid();
         }
 
-
         private void GenerateGrid()
         {
             if (!int.TryParse(KernelWidthBox.Text, out kernelWidth) || kernelWidth < 1 || kernelWidth > 9 || kernelWidth % 2 == 0 ||
@@ -41,8 +40,8 @@ namespace Image_filtering
 
             anchorRow = kernelHeight / 2;
             anchorCol = kernelWidth / 2;
-            SelectedKernel.AnchorRow = anchorRow;
-            SelectedKernel.AnchorCol = anchorCol;
+            SelectedKernel.AnchorRow = 0;
+            SelectedKernel.AnchorCol = 0;
 
             for (int row = 0; row < kernelHeight; row++)
             {
@@ -51,16 +50,19 @@ namespace Image_filtering
                 {
                     if (row == 0) KernelGrid.ColumnDefinitions.Add(new ColumnDefinition());
 
+                    int relativeRow = anchorRow - row;
+                    int relativeCol = col - anchorCol;
+
                     Button cellButton = new Button
                     {
-                        Content = (row == anchorRow && col == anchorCol) ? "X" : "",
+                        Content = (row == anchorRow && col == anchorCol) ? "X" : $"({relativeRow}, {relativeCol})",
                         Width = 50,
                         Height = 50,
                         Margin = new Thickness(2),
                         Background = Brushes.White
                     };
 
-                    int r = row, c = col; // Prevent closure issues in event handlers
+                    int r = row, c = col;
                     cellButton.Click += (s, ev) => ChangeAnchor(r, c);
 
                     Grid.SetRow(cellButton, row);
@@ -74,19 +76,18 @@ namespace Image_filtering
 
         private void ChangeAnchor(int newRow, int newCol)
         {
-
-            kernelButtons[anchorRow, anchorCol].Content = "";
+            kernelButtons[anchorRow, anchorCol].Content = $"({anchorRow - anchorRow}, {anchorCol - anchorCol})";
 
             anchorRow = newRow;
             anchorCol = newCol;
-            SelectedKernel.AnchorRow = anchorRow - 1;
-            SelectedKernel.AnchorCol = anchorCol - 1;
 
             kernelButtons[anchorRow, anchorCol].Content = "X";
         }
 
         private void ApplyAnchor_Click(object sender, RoutedEventArgs e)
         {
+            SelectedKernel.AnchorRow = anchorRow - (kernelHeight / 2);
+            SelectedKernel.AnchorCol = anchorCol - (kernelWidth / 2);
             MessageBox.Show($"Anchor set at: ({SelectedKernel.AnchorRow}, {SelectedKernel.AnchorCol})", "Anchor Applied", MessageBoxButton.OK, MessageBoxImage.Information);
             this.DialogResult = true;
             this.Close();

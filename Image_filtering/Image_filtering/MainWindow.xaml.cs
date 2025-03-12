@@ -138,6 +138,11 @@ namespace Image_filtering
             double gamma = 1.2;
             ModifiedImage.Source = ImageFilters.GammaCorrection((WriteableBitmap)ModifiedImage.Source, gamma);
         }
+        private void Median_Click(object sender, RoutedEventArgs e)
+        {
+            int filterSize = GetFilterSize();
+            ModifiedImage.Source = ImageFilters.MedianFilter((WriteableBitmap)ModifiedImage.Source, filterSize);
+        }
 
         private void Blur_Click(object sender, RoutedEventArgs e)
         {
@@ -355,8 +360,7 @@ namespace Image_filtering
             }
         }
 
-
-        private void Median_Click(object sender, RoutedEventArgs e)
+        private int GetFilterSize ()
         {
             Window inputDialog = new Window
             {
@@ -383,13 +387,14 @@ namespace Image_filtering
             if (inputDialog.ShowDialog() == true)
             {
                 int filterSize;
-                if (!int.TryParse(inputBox.Text, out filterSize) && filterSize > 0 && filterSize % 2 == 0)
+                if (!int.TryParse(inputBox.Text, out filterSize) && filterSize < 0 && filterSize > 15 && filterSize % 2 == 0)
                 {
                     MessageBox.Show("Invalid filter size. Please enter a positive number.");
+                    return -1;
                 }
+                return filterSize;
             }
-
-
+            return -1;
         }
 
     }

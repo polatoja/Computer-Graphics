@@ -99,5 +99,57 @@ namespace Image_filtering
                                    PixelFormats.Bgra32, null, pixelData, stride));
         }
 
+
+        public static WriteableBitmap MedianFilter(WriteableBitmap source, int filterSize)
+        {
+            int height = source.PixelHeight;
+            int width = source.PixelWidth;
+            int stride = 4 * width;
+            byte[] pixelData = new byte[height * stride];
+            byte[] resultData = new byte[height * stride];
+
+            source.CopyPixels(pixelData, stride, 0);
+            int halfSize = filterSize / 2;
+
+            for (int y = halfSize; y < height - halfSize; y++)
+            {
+                for (int x = halfSize; x < width - halfSize; x++)
+                {
+                    int pixelIndex = (y * stride) + (x * 4);
+
+                    byte[] blueChannel = new byte[filterSize * filterSize];
+                    byte[] greenChannel = new byte[filterSize * filterSize];
+                    byte[] redChannel = new byte[filterSize * filterSize];
+
+                    int index = 0;
+                    for (int fy = -halfSize; fy <= halfSize; fy++)
+                    {
+                        for (int fx = -halfSize; fx <= halfSize; fx++)
+                        {
+                            int neighborIndex = ((y + fy) * stride) + ((x + fx) * 4);
+                            blueChannel[index] = pixelData[neighborIndex];
+                            greenChannel[index] = pixelData[neighborIndex + 1];
+                            redChannel[index] = pixelData[neighborIndex + 2];
+                            index++;
+                        }
+                    }
+
+                    Array.Sort(blueChannel);
+                    Array.Sort(greenChannel);
+                    Array.Sort(redChannel);
+
+                    int medianIndex = blueChannel.Length / 2;
+                    resultData[pixelIndex] = blueChannel[medianIndex];
+                    resultData[pixelIndex + 1] = greenChannel[medianIndex];
+                    resultData[pixelIndex + 2] = redChannel[medianIndex];
+                    resultData[pixelIndex + 3] = pixelData[pixelIndex + 3];
+                    resultData[pixelIndex + 3] = pixelData[pixelIndex + 3];
+                }
+            }
+
+            return new WriteableBitmap(BitmapSource.Create(width, height, source.DpiX, source.DpiY,
+                                       PixelFormats.Bgra32, null, resultData, stride));
+        }
+
     }
 }

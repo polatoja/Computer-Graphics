@@ -4,7 +4,7 @@
         Title="Image Filtering" Height="450" Width="800">
 
     <Window.Resources>
-        <!-- Custom Button Style -->
+        <!-- Pretty Buttons -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Black"/>
             <Setter Property="Foreground" Value="White"/>
@@ -31,12 +31,9 @@
     </Window.Resources>
 
     <Grid>
-        <!-- Define two columns -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
-            <!-- Image Section (Left) -->
             <ColumnDefinition Width="2*" />
-            <!-- Buttons Section (Right) -->
         </Grid.ColumnDefinitions>
 
         <!-- Left Side: Stacked Images -->
@@ -54,19 +51,19 @@
                 <Button x:Name="AddImage" Content="Add Image" Click="AddImage_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="SaveImage" Content="Save Image" Click="SaveImage_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="BackToOriginal" Content="Go Back" Click="BackToOriginal_Click" Style="{StaticResource RoundedButtonStyle}"/>
-                <Button x:Name="MedianFilter" Content="Median" Click="Median_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
-            <!-- Section 2: Basic Adjustments -->
+            <!-- Section 2: Function Filters -->
             <StackPanel Orientation="Vertical" Margin="5 10">
                 <TextBlock Text="Function Filters" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
                 <Button x:Name="Inversion" Content="Inversion" Click="Inversion_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="BrightnessCorrection" Content="Brightness" Click="Brightness_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="ContrastEnhancement" Content="Contrast" Click="Contrast_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="GammaCorrection" Content="Gamma" Click="Gamma_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="MedianFilter" Content="Median" Click="Median_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
-            <!-- Section 3: Advanced Filters -->
+            <!-- Section 3: Convolution Filters -->
             <StackPanel Orientation="Vertical" Margin="5 10">
                 <TextBlock Text="Convolution Filters" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
                 <Button x:Name="Blur" Content="Blur" Click="Blur_Click" Style="{StaticResource RoundedButtonStyle}"/>
@@ -76,6 +73,7 @@
                 <Button x:Name="Emboss" Content="Emboss" Click="Emboss_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
+            <!-- Section 4: Customizing Filters -->
             <StackPanel>
                 <TextBlock Text="Custom Filters" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
                 <Button x:Name="ShowKernel" Content="Custom Filter" Click="ShowKernel_Click" Style="{StaticResource RoundedButtonStyle}"/>

@@ -118,8 +118,11 @@ namespace Image_filtering
                         {
                             int pixelX = x + kx;
                             int pixelY = y + ky;
-                            int index = (pixelY * stride) + (pixelX * 4); // 4 bytes per pixel
 
+                            if (pixelX < 0 || pixelX >= width || pixelY < 0 || pixelY >= height)
+                                continue; // Skip out-of-bounds pixels
+
+                            int index = (pixelY * stride) + (pixelX * 4); // 4 bytes per pixel
                             double weight = kernel.KernelValues[ky + offset_y, kx + offset_x];
 
                             sum[0] += pixelData[index] * weight;      // Blue
@@ -128,17 +131,21 @@ namespace Image_filtering
                         }
                     }
 
-                    int newIndex = (y * stride) + (x * 4);
-                    resultData[newIndex] = (byte)Math.Clamp((int)sum[0], 0, 255);
-                    resultData[newIndex + 1] = (byte)Math.Clamp((int)sum[1], 0, 255);
-                    resultData[newIndex + 2] = (byte)Math.Clamp((int)sum[2], 0, 255);
-                    resultData[newIndex + 3] = pixelData[newIndex + 3]; // alpha
+                    int newIndex = ((y - anchorRow) * stride) + ((x - anchorCol) * 4);
+                    if (newIndex >= 0 && newIndex + 3 < resultData.Length) // Ensure within bounds
+                    {
+                        resultData[newIndex] = (byte)Math.Clamp((int)sum[0], 0, 255);
+                        resultData[newIndex + 1] = (byte)Math.Clamp((int)sum[1], 0, 255);
+                        resultData[newIndex + 2] = (byte)Math.Clamp((int)sum[2], 0, 255);
+                        resultData[newIndex + 3] = pixelData[newIndex + 3]; // Preserve alpha
+                    }
                 }
             }
 
             return new WriteableBitmap(BitmapSource.Create(width, height, source.DpiX, source.DpiY,
                                        PixelFormats.Bgra32, null, resultData, stride));
         }
+
 
 
         public static WriteableBitmap ApplyFromFile(WriteableBitmap source, string filePath)
