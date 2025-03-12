@@ -8,7 +8,7 @@
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Black"/>
             <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Padding" Value="18 7"/>
             <Setter Property="Margin" Value="4"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -79,7 +79,18 @@
                 <TextBlock Text="Custom Filters" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
                 <Button x:Name="ShowKernel" Content="Custom Filter" Click="ShowKernel_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="AnchorPoint" Content="Anchor Point" Click="ChangeAnchor_Click" Style="{StaticResource RoundedButtonStyle}"/>
-                <Button x:Name="SavedFilters" Content="Your Filters" Click="SavedFilters_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Grid x:Name="YourFilterGrid">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListBox x:Name="FiltersListBox" Width="250" Height="200" 
+                        Visibility="Collapsed" Grid.Column="0"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <Button Content="Your Filters" Click="SavedFilters_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                    </StackPanel>
+                </Grid>
+
             </StackPanel>
 
         </StackPanel>

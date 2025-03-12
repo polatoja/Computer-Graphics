@@ -36,6 +36,9 @@
                 VerticalAlignment="Bottom" Margin="5"/>
             <Button Content="Apply" Click="Apply_Click" HorizontalAlignment="Center"
                 VerticalAlignment="Bottom" Margin="5"/>
+            <Button Content="Apply &amp; Save" Click="Apply_Save_Click" HorizontalAlignment="Center"
+                VerticalAlignment="Bottom" Margin="5"/>
+
         </StackPanel>
 
     </Grid>

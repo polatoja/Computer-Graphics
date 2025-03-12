@@ -11,7 +11,7 @@ namespace Image_filtering
     {
         private int kernelWidth = 3;
         private int kernelHeight = 3;
-        private int kernelDivisor = 1;
+        private double kernelDivisor = 1;
         private int kernelOffset = 1;
         private TextBox[,] kernelInputs;
         public Kernel SelectedKernel { get; private set; }
@@ -63,20 +63,48 @@ namespace Image_filtering
             }
         }
 
+        public void GenerateKernel_Auto(Kernel kernel)
+        {
+            KernelGrid.Children.Clear();
+            KernelGrid.RowDefinitions.Clear();
+            KernelGrid.ColumnDefinitions.Clear();
+            kernelInputs = new TextBox[kernel.Rows, kernel.Cols];
+
+            for (int row = 0; row < kernelHeight; row++)
+            {
+                KernelGrid.RowDefinitions.Add(new RowDefinition());
+                for (int col = 0; col < kernelWidth; col++)
+                {
+                    if (row == 0) KernelGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+                    TextBox inputBox = new TextBox
+                    {
+                        Text = kernel.KernelValues[row, col].ToString(CultureInfo.InvariantCulture),
+                        Width = 50,
+                        Height = 30,
+                        Margin = new Thickness(2),
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        TextAlignment = TextAlignment.Center
+                    };
+
+                    Grid.SetRow(inputBox, row);
+                    Grid.SetColumn(inputBox, col);
+                    KernelGrid.Children.Add(inputBox);
+
+                    kernelInputs[row, col] = inputBox;
+                }
+            }
+        }
         public Kernel GetKernelValues()
         {
             double[,] kernelValues = new double[kernelHeight, kernelWidth];
+            double sum = 0;
 
-            if (!int.TryParse(OffsetBox.Text, out kernelOffset) || kernelOffset == 0)
+            if (!int.TryParse(OffsetBox.Text, out kernelOffset))
             {
-                MessageBox.Show("Please enter valid kernel divisor",
-                                "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-
-            if (!int.TryParse(KernelDivisorBox.Text, out kernelDivisor) || kernelDivisor == 0)
-            {
-                MessageBox.Show("Please enter valid kernel divisor",
-                                "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Please enter a valid kernel offset.", "Invalid Input", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return default;
             }
 
             for (int row = 0; row < kernelHeight; row++)
@@ -88,12 +116,28 @@ namespace Image_filtering
                         MessageBox.Show("Invalid kernel values detected. Please enter numbers only.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         return default;
                     }
-                    kernelValues[row, col] /= kernelDivisor;
+                    sum += kernelValues[row, col];
                 }
+            }
+
+            if (sum != 0 && sum != 1)
+            {
+                kernelDivisor = sum;
+                for (int row = 0; row < kernelHeight; row++)
+                {
+                    for (int col = 0; col < kernelWidth; col++)
+                    {
+                        kernelValues[row, col] /= kernelDivisor;
+                    }
+                }
+
+                MessageBox.Show($"Kernel normalized. New divisor: {kernelDivisor}", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
             return new Kernel(kernelValues, kernelHeight, kernelWidth, kernelOffset, kernelOffset);
         }
+
+
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
@@ -110,8 +154,62 @@ namespace Image_filtering
                 return;
 
             SelectedKernel = kernel;
+
             DialogResult = true;
             this.Close();
         }
+
+        private void Apply_Save_Click(object sender, RoutedEventArgs e)
+        {
+            if (kernelInputs == null)
+                return;
+
+            Kernel kernel = GetKernelValues();
+            if (kernel.KernelValues == null)
+                return;
+
+            SelectedKernel = kernel;
+
+            SaveKernelToFile(kernel);
+
+            DialogResult = true;
+            this.Close();
+        }
+
+        public void LoadKernelIntoGrid(double[,] kernelValues, int rows, int cols)
+        {
+            kernelWidth = cols;
+            kernelHeight = rows;
+            KernelGrid.Children.Clear();
+            KernelGrid.RowDefinitions.Clear();
+            KernelGrid.ColumnDefinitions.Clear();
+            kernelInputs = new TextBox[rows, cols];
+
+            for (int row = 0; row < rows; row++)
+            {
+                KernelGrid.RowDefinitions.Add(new RowDefinition());
+                for (int col = 0; col < cols; col++)
+                {
+                    if (row == 0) KernelGrid.ColumnDefinitions.Add(new ColumnDefinition());
+
+                    TextBox inputBox = new TextBox
+                    {
+                        Text = kernelValues[row, col].ToString(CultureInfo.InvariantCulture),
+                        Width = 50,
+                        Height = 30,
+                        Margin = new Thickness(2),
+                        HorizontalAlignment = HorizontalAlignment.Center,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        TextAlignment = TextAlignment.Center
+                    };
+
+                    Grid.SetRow(inputBox, row);
+                    Grid.SetColumn(inputBox, col);
+                    KernelGrid.Children.Add(inputBox);
+                    kernelInputs[row, col] = inputBox;
+                }
+            }
+        }
+
     }
 }

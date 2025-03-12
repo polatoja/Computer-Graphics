@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -24,6 +25,8 @@ namespace Image_filtering
         {
             InitializeComponent();
         }
+
+        private ListBox filtersListBox;
 
         private void AddImage_Click(object sender, RoutedEventArgs e)
         {
@@ -239,42 +242,83 @@ namespace Image_filtering
 
         private void SavedFilters_Click(object sender, RoutedEventArgs e)
         {
-            if (ModifiedImage.Source == null)
-                return;
-
             string filtersPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters");
 
             if (!Directory.Exists(filtersPath))
             {
-                MessageBox.Show("Filter directory not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Directory.CreateDirectory(filtersPath);
+            }
+
+            string[] filterFiles = Directory.GetFiles(filtersPath, "*.conv");
+
+            if (filterFiles.Length == 0)
+            {
+                MessageBox.Show("No saved filters found.", "Filters", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
 
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            if (filtersListBox == null)
             {
-                InitialDirectory = filtersPath,
-                Filter = "Convolution Filters (*.conv)|*.conv*",
-                Title = "Select a Filter"
-            };
+                filtersListBox = new ListBox
+                {
+                    Width = 250,
+                    Height = 200,
+                    SelectionMode = SelectionMode.Single,
+                    Margin = new Thickness(10)
+                };
 
-            if (openFileDialog.ShowDialog() == true)
+                filtersListBox.MouseDoubleClick += FiltersListBox_DoubleClick;
+
+                YourFilterGrid.Children.Add(filtersListBox);
+            }
+
+            filtersListBox.Items.Clear();
+            foreach (string file in filterFiles)
             {
-                string filePath = openFileDialog.FileName;
-                MessageBox.Show("You are amazing!!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                /*
-                try
-                {
-                    string[] filterData = File.ReadAllLines(filePath);
-
-                    LoadFilter(filterData);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error loading the filter: " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                */
+                filtersListBox.Items.Add(System.IO.Path.GetFileName(file));
             }
         }
+
+        private void FiltersListBox_DoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (filtersListBox.SelectedItem == null)
+                return;
+
+            string selectedFilter = filtersListBox.SelectedItem.ToString();
+            string filtersPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters", selectedFilter);
+
+            if (!File.Exists(filtersPath))
+            {
+                MessageBox.Show("The selected filter file does not exist.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            try
+            {
+                Kernel kernelFilter = LoadKernelFromFile(filtersPath);
+                
+                KernelWindow kernelWindow = new KernelWindow();
+                kernelWindow.Owner = this;
+
+                kernelWindow.GenerateKernel_Auto(kernelFilter);
+
+                if (kernelWindow.ShowDialog() == true)
+                {
+                    Kernel customKernel = kernelWindow.SelectedKernel;
+
+                    if (customKernel.KernelValues != null && ModifiedImage.Source is WriteableBitmap writableBitmap)
+                    {
+                        ModifiedImage.Source = ConvolutionFilters.ApplyConvolutionFilter(writableBitmap, customKernel);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading filter: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
 
         private void LoadFilter(string[] filterData)
         {

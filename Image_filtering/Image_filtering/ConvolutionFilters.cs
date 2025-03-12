@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -16,11 +17,24 @@ namespace Image_filtering
     {
         public struct Kernel
         {
-            public double[,] KernelValues { get; }
-            public int Rows { get; }
-            public int Cols { get; }
-            public int OffsetX { get; }
-            public int OffsetY { get; }
+            public double[,] KernelValues { get; set; }
+            public int Rows { get; set; }
+            public int Cols { get; set; }
+            public int OffsetX { get; set; }
+            public int OffsetY { get; set; }
+            public int AnchorRow { get; set; }
+            public int AnchorCol { get; set; }
+
+            public Kernel(double[,] kernel, int rows, int cols, int offsetX, int offsetY, int anchorRow, int anchorCol)
+            {
+                KernelValues = kernel;
+                Rows = rows;
+                Cols = cols;
+                OffsetX = offsetX;
+                OffsetY = offsetY;
+                AnchorRow = anchorRow;
+                AnchorCol = anchorCol;
+            }
             public Kernel(double[,] kernel, int rows, int cols, int offsetX, int offsetY)
             {
                 KernelValues = kernel;
@@ -36,6 +50,8 @@ namespace Image_filtering
                 Cols = cols;
                 OffsetX = cols / 2;
                 OffsetY = rows / 2;
+                AnchorRow = 0;
+                AnchorCol = 0;
             }
         }
 
@@ -87,13 +103,15 @@ namespace Image_filtering
             int offset_x = kernel.OffsetX;
             int offset_y = kernel.OffsetY;
 
+            int anchorRow = kernel.AnchorRow;
+            int anchorCol = kernel.AnchorCol;
+
             for (int y = offset_y; y < height - offset_y; y++)
             {
                 for (int x = offset_x; x < width - offset_x; x++)
                 {
                     double[] sum = new double[3]; // R, G, B channels
 
-                    // Apply kernel
                     for (int ky = -offset_y; ky <= offset_y; ky++)
                     {
                         for (int kx = -offset_x; kx <= offset_x; kx++)
@@ -122,10 +140,41 @@ namespace Image_filtering
                                        PixelFormats.Bgra32, null, resultData, stride));
         }
 
+
         public static WriteableBitmap ApplyFromFile(WriteableBitmap source, string filePath)
         {
             Kernel kernel = LoadKernelFromFile(filePath);
             return ApplyConvolutionFilter(source, kernel);
+        }
+
+        public static void SaveKernelToFile(Kernel kernel)
+        {
+            string filtersPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters");
+
+            if (!Directory.Exists(filtersPath))
+            {
+                Directory.CreateDirectory(filtersPath);
+            }
+
+            string fileName = $"Filter_{DateTime.Now:yyyyMMdd_HHmmss}.conv";
+            string filePath = Path.Combine(filtersPath, fileName);
+
+            StringBuilder fileContent = new StringBuilder();
+
+            fileContent.AppendLine($"{kernel.Cols} {kernel.Rows}");
+
+            for (int i = 0; i < kernel.Rows; i++)
+            {
+                for (int j = 0; j < kernel.Cols; j++)
+                {
+                    fileContent.Append(kernel.KernelValues[i, j].ToString(CultureInfo.InvariantCulture) + " ");
+                }
+                fileContent.AppendLine();
+            }
+
+            File.WriteAllText(filePath, fileContent.ToString());
+
+            MessageBox.Show($"Filter saved successfully in {filtersPath}!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
     }
