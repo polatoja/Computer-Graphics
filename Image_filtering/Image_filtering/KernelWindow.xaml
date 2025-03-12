@@ -36,8 +36,17 @@
                 VerticalAlignment="Bottom" Margin="5"/>
             <Button Content="Apply" Click="Apply_Click" HorizontalAlignment="Center"
                 VerticalAlignment="Bottom" Margin="5"/>
-            <Button Content="Apply &amp; Save" Click="Apply_Save_Click" HorizontalAlignment="Center"
-                VerticalAlignment="Bottom" Margin="5"/>
+
+            <StackPanel Orientation="Vertical" VerticalAlignment="Bottom" Margin="5">
+                <Button Content="Apply &amp; Save" Click="ApplySave_Click"/>
+
+                <!-- Initially hidden TextBox for filename -->
+                <TextBox x:Name="FilenameTextBox" Width="200" Height="30" Visibility="Collapsed"/>
+
+                <!-- Initially hidden Save button -->
+                <Button x:Name="SaveFilterButton" Content="Save Filter" Click="SaveFilter_Click" Width="120" Height="30" Visibility="Collapsed" />
+            </StackPanel>
+
 
         </StackPanel>
 

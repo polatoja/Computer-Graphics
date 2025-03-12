@@ -147,7 +147,7 @@ namespace Image_filtering
             return ApplyConvolutionFilter(source, kernel);
         }
 
-        public static void SaveKernelToFile(Kernel kernel)
+        public static void SaveKernelToFile(Kernel kernel, string filename)
         {
             string filtersPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "ConvFilters");
 
@@ -156,11 +156,15 @@ namespace Image_filtering
                 Directory.CreateDirectory(filtersPath);
             }
 
-            string fileName = $"Filter_{DateTime.Now:yyyyMMdd_HHmmss}.conv";
-            string filePath = Path.Combine(filtersPath, fileName);
+            // Ensure filename has .conv extension
+            if (!filename.EndsWith(".conv", StringComparison.OrdinalIgnoreCase))
+            {
+                filename += ".conv";
+            }
+
+            string filePath = Path.Combine(filtersPath, filename);
 
             StringBuilder fileContent = new StringBuilder();
-
             fileContent.AppendLine($"{kernel.Cols} {kernel.Rows}");
 
             for (int i = 0; i < kernel.Rows; i++)
@@ -174,8 +178,9 @@ namespace Image_filtering
 
             File.WriteAllText(filePath, fileContent.ToString());
 
-            MessageBox.Show($"Filter saved successfully in {filtersPath}!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show($"Filter saved successfully as {filename}!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
 
     }
 }

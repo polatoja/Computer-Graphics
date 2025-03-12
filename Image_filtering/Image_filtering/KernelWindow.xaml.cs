@@ -159,6 +159,7 @@ namespace Image_filtering
             this.Close();
         }
 
+        /*
         private void Apply_Save_Click(object sender, RoutedEventArgs e)
         {
             if (kernelInputs == null)
@@ -175,6 +176,36 @@ namespace Image_filtering
             DialogResult = true;
             this.Close();
         }
+        */
+
+        private void ApplySave_Click(object sender, RoutedEventArgs e)
+        {
+            if (kernelInputs == null)
+                return;
+
+            Kernel kernel = GetKernelValues();
+            if (kernel.KernelValues == null)
+                return;
+
+            SelectedKernel = kernel;
+
+            FilenameTextBox.Visibility = Visibility.Visible;
+            SaveFilterButton.Visibility = Visibility.Visible;
+        }
+
+        private void SaveFilter_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(FilenameTextBox.Text))
+            {
+                MessageBox.Show("Please enter a valid filename.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            string filename = FilenameTextBox.Text.Trim();
+            SaveKernelToFile(SelectedKernel, filename);
+        }
+
+
 
         public void LoadKernelIntoGrid(double[,] kernelValues, int rows, int cols)
         {
