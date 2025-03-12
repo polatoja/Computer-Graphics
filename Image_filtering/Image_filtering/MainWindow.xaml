@@ -54,6 +54,7 @@
                 <Button x:Name="AddImage" Content="Add Image" Click="AddImage_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="SaveImage" Content="Save Image" Click="SaveImage_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="BackToOriginal" Content="Go Back" Click="BackToOriginal_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="MedianFilter" Content="Median" Click="Median_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
             <!-- Section 2: Basic Adjustments -->
