@@ -15,6 +15,7 @@ namespace Image_filtering
 
         private ListBox filtersListBox;
         private int selectedDitherSize;
+        private int errorDiffusionType;
         private void AddImage_Click(object sender, RoutedEventArgs e)
         {
             SelectedImage.Source = ImageOperations.LoadImage();
@@ -120,7 +121,10 @@ namespace Image_filtering
             if (ModifiedImage.Source == null)
                 return;
 
-            OrderedDitcheringSize.Visibility = Visibility.Visible;
+            if(OrderedDitcheringSize.Visibility == Visibility.Visible)
+                OrderedDitcheringSize.Visibility = Visibility.Collapsed;
+            else
+                OrderedDitcheringSize.Visibility = Visibility.Visible;
         }
 
         private void DitherSize_Click(object sender, RoutedEventArgs e)
@@ -133,6 +137,49 @@ namespace Image_filtering
                 ModifiedImage.Source = DitheringOperations.ApplyOrderedDitchering((WriteableBitmap)ModifiedImage.Source, selectedDitherSize);
             }
             OrderedDitcheringSize.Visibility = Visibility.Collapsed;
+        }
+
+        private void ErrorDiffusion_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+
+            if (ErrorDiffusionType.Visibility == Visibility.Visible)
+                ErrorDiffusionType.Visibility = Visibility.Collapsed;
+            else
+                ErrorDiffusionType.Visibility = Visibility.Visible; 
+        }
+
+        private void ErrDiffType_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && int.TryParse(button.Tag.ToString(), out int type))
+            {
+                errorDiffusionType = type;
+                MessageBox.Show($"Error diffusion type: {errorDiffusionType}", "Dithering", MessageBoxButton.OK, MessageBoxImage.Information);
+                
+                ModifiedImage.Source = DitheringOperations.ApplyErrorDiffusion((WriteableBitmap)ModifiedImage.Source, errorDiffusionType);
+            }
+            ErrorDiffusionType.Visibility = Visibility.Collapsed;
+        }
+
+        private void UniformQuantization_Click(object sender, RoutedEventArgs e)
+        {
+            UniformQuantizationLevel.Visibility = Visibility.Visible;
+        }
+
+        private void ApplyUniformQuantization_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+
+            if (!int.TryParse(UniformQuantizationLevelTextBox.Text, out int levels) || levels < 2 || levels > 256)
+            {
+                MessageBox.Show("Please enter a valid number between 2 and 256.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            UniformQuantizationLevel.Visibility = Visibility.Collapsed;
+            //ModifiedImage.Source = UniformColorQuantization((WriteableBitmap)ModifiedImage.Source, levels);
         }
 
     }

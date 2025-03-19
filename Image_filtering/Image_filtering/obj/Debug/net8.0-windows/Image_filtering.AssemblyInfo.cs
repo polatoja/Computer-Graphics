@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Image_filtering")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+46f4af41d6e286509067bc9c71b0d579eba391c2")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
 [assembly: System.Reflection.AssemblyProductAttribute("Image_filtering")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Image_filtering")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

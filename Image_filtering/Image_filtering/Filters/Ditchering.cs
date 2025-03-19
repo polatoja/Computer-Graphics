@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using static Image_filtering.Filters.ErrorDiffusion;
 
 namespace Image_filtering.Filters
 {
@@ -145,10 +146,10 @@ namespace Image_filtering.Filters
                     for (int x = 0; x < prevSize; x++)
                     {
                         int value = smallerMatrix[y, x];
-                        matrix[y, x] = 4 * value;
-                        matrix[y, x + prevSize] = 4 * value + 2;
-                        matrix[y + prevSize, x] = 4 * value + 3;
-                        matrix[y + prevSize, x + prevSize] = 4 * value + 1;
+                        matrix[y, x] = 4 * (value - 1) + 1;
+                        matrix[y, x + prevSize] = 4 * (value - 1) + 3;
+                        matrix[y + prevSize, x] = 4 * (value - 1) + 4;
+                        matrix[y + prevSize, x + prevSize] = 4 * (value - 1) + 2;
                     }
                 }
             }
@@ -178,6 +179,63 @@ namespace Image_filtering.Filters
                     byte newColor = gray > threshold ? (byte)255 : (byte)0;
 
                     pixelData[index] = pixelData[index + 1] = pixelData[index + 2] = newColor;
+                }
+            }
+
+            WriteableBitmap ditheredBitmap = new WriteableBitmap(sourceBitmap);
+            ditheredBitmap.WritePixels(new System.Windows.Int32Rect(0, 0, width, height), pixelData, stride, 0);
+
+            return ditheredBitmap;
+        }
+
+
+        public static WriteableBitmap ErrorDiffusionFunc(WriteableBitmap sourceBitmap, int type)
+        {
+            string filePath = GetFilePath(type);
+            ErrorKernel kernel = LoadKernelFromFile(filePath);
+
+            int width = sourceBitmap.PixelWidth;
+            int height = sourceBitmap.PixelHeight;
+            int stride = width * 4;
+            byte[] pixelData = new byte[height * stride];
+
+            sourceBitmap.CopyPixels(pixelData, stride, 0);
+
+            int f_x = kernel.Cols / 2;
+            int f_y = kernel.Rows / 2;
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    int index = (y * stride) + (x * 4);
+
+                    byte gray = (byte)((pixelData[index] + pixelData[index + 1] + pixelData[index + 2]) / 3);
+
+                    byte newColor = gray > 128 ? (byte)255 : (byte)0;
+                    pixelData[index] = pixelData[index + 1] = pixelData[index + 2] = newColor;
+
+                    int error = gray - newColor;
+
+                    // Distribute error using the kernel
+                    for (int i = -f_x; i <= f_x; i++)
+                    {
+                        for (int j = -f_y; j <= f_y; j++)
+                        {
+                            int newX = x + i;
+                            int newY = y + j;
+
+                            // Ensure we're within image bounds
+                            if (newX >= 0 && newX < width && newY >= 0 && newY < height)
+                            {
+                                int newIndex = (newY * stride) + (newX * 4);
+                                int diffusedValue = pixelData[newIndex] + (error * kernel.KernelValues[j + f_y, i + f_x]) / kernel.Div;
+
+                                // Clamp to valid byte range [0, 255]
+                                pixelData[newIndex] = (byte)Math.Clamp(diffusedValue, 0, 255);
+                            }
+                        }
+                    }
                 }
             }
 

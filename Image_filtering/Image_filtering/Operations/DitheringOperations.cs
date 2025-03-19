@@ -51,5 +51,10 @@ namespace Image_filtering.Operations
         {
             return Ditchering.OrderedDithering(image, size);
         }
+
+        public static WriteableBitmap ApplyErrorDiffusion(WriteableBitmap image, int type)
+        {
+            return Ditchering.ErrorDiffusionFunc(image, type);
+        }
     }
 }

@@ -94,22 +94,47 @@
 
         </StackPanel>
 
-        <!-- Task II: Ditchering Controls -->
-        
+        <!-- Task II: Button Controls -->
+
         <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10">
-            <Button x:Name="GreyScale" Content="Gray Scale" Click="GreyScale_Click" Style="{StaticResource RoundedButtonStyle}"/>
-            <TextBlock Text="Ditchering" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
-            <Button x:Name="RandomDitchering" Content="Random" Click="RandomDitchering_Click" Style="{StaticResource RoundedButtonStyle}"/>
-            <Button x:Name="AverageDitchering" Content="Average" Click="AverageDitchering_Click" Style="{StaticResource RoundedButtonStyle}"/>
-            <Button x:Name="OrderedDitchering" Content="Ordered" Click="OrderedDitchering_Click" Style="{StaticResource RoundedButtonStyle}"/>
-            <StackPanel x:Name="OrderedDitcheringSize" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10" Visibility="Collapsed">
-                <Button Content="2x2" Click="DitherSize_Click" Tag="2"/>
-                <Button Content="3x3" Click="DitherSize_Click" Tag="3"/>
-                <Button Content="4x4" Click="DitherSize_Click" Tag="4"/>
-                <Button Content="6x6" Click="DitherSize_Click" Tag="6"/>
+
+            <!-- Ditchering Controls -->
+            <StackPanel Orientation="Vertical" Margin="5 10">
+                <Button x:Name="GreyScale" Content="Gray Scale" Click="GreyScale_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <TextBlock Text="Ditchering" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <Button x:Name="RandomDitchering" Content="Random" Click="RandomDitchering_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="AverageDitchering" Content="Average" Click="AverageDitchering_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="OrderedDitchering" Content="Ordered" Click="OrderedDitchering_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <StackPanel x:Name="OrderedDitcheringSize" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Visibility="Collapsed">
+                    <Button Content="2x2" Click="DitherSize_Click" Tag="2"/>
+                    <Button Content="3x3" Click="DitherSize_Click" Tag="3"/>
+                    <Button Content="4x4" Click="DitherSize_Click" Tag="4"/>
+                    <Button Content="6x6" Click="DitherSize_Click" Tag="6"/>
+                </StackPanel>
+                <Button x:Name="ErrorDiffusion" Content="Error Diffusion" Click="ErrorDiffusion_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <StackPanel x:Name="ErrorDiffusionType" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Visibility="Collapsed">
+                    <Button Content="Floyd-Steinberg" Click="ErrDiffType_Click" Tag="1"/>
+                    <Button Content="Burkers" Click="ErrDiffType_Click" Tag="2"/>
+                    <Button Content="Stucky" Click="ErrDiffType_Click" Tag="3"/>
+                    <Button Content="Sierra" Click="ErrDiffType_Click" Tag="4"/>
+                    <Button Content="Atkinson" Click="ErrDiffType_Click" Tag="5"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Quantization of Controls -->
+            <StackPanel Orientation="Vertical" Margin="5 10">
+                <TextBlock Text="Quantization" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <Button x:Name="UniformQuantization" Content="Uniforme" Click="UniformQuantization_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                
+                <StackPanel x:Name="UniformQuantizationLevel" HorizontalAlignment="Center" Visibility="Collapsed">
+                    <TextBox x:Name="UniformQuantizationLevelTextBox" Text="4" FontWeight="Bold" Width="100" TextAlignment="Center"/>
+                    <Button Content="Apply Quantization" Click="ApplyUniformQuantization_Click"/>
+                </StackPanel>
+                
             </StackPanel>
 
         </StackPanel>
-        
+
+
     </Grid>
 </Window>
