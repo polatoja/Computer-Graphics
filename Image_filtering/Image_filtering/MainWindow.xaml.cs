@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Image_filtering.Operations;
 using Image_filtering.Filters;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Image_filtering
 {
@@ -103,17 +104,17 @@ namespace Image_filtering
 
         private void GreyScale_Click(object sender, RoutedEventArgs e)
         {
-            ModifiedImage.Source = DitheringOperations.ConvertToGrey((WriteableBitmap)ModifiedImage.Source);
+            ModifiedImage.Source = Ditchering.ConvertToGrey((WriteableBitmap)ModifiedImage.Source);
         }
 
         private void RandomDitchering_Click(object sender, RoutedEventArgs e)
         {
-            ModifiedImage.Source = DitheringOperations.ApplyRandomDitchering((WriteableBitmap)ModifiedImage.Source);
+            ModifiedImage.Source = Ditchering.RandomDitchering((WriteableBitmap)ModifiedImage.Source);
         }
 
         private void AverageDitchering_Click(object sender, RoutedEventArgs e)
         {
-            ModifiedImage.Source = DitheringOperations.ApplyAverageDitchering((WriteableBitmap)ModifiedImage.Source);
+            ModifiedImage.Source = Ditchering.AverageDitchering((WriteableBitmap)ModifiedImage.Source);
         }
 
         private void OrderedDitchering_Click(object sender, RoutedEventArgs e)
@@ -134,7 +135,7 @@ namespace Image_filtering
                 selectedDitherSize = size;
                 MessageBox.Show($"Dithering size set to: {selectedDitherSize}x{selectedDitherSize}", "Dithering", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                ModifiedImage.Source = DitheringOperations.ApplyOrderedDitchering((WriteableBitmap)ModifiedImage.Source, selectedDitherSize);
+                ModifiedImage.Source = Ditchering.OrderedDithering((WriteableBitmap)ModifiedImage.Source, selectedDitherSize);
             }
             OrderedDitcheringSize.Visibility = Visibility.Collapsed;
         }
@@ -157,7 +158,7 @@ namespace Image_filtering
                 errorDiffusionType = type;
                 MessageBox.Show($"Error diffusion type: {errorDiffusionType}", "Dithering", MessageBoxButton.OK, MessageBoxImage.Information);
                 
-                ModifiedImage.Source = DitheringOperations.ApplyErrorDiffusion((WriteableBitmap)ModifiedImage.Source, errorDiffusionType);
+                ModifiedImage.Source = Ditchering.ErrorDiffusionFunc((WriteableBitmap)ModifiedImage.Source, errorDiffusionType);
             }
             ErrorDiffusionType.Visibility = Visibility.Collapsed;
         }
@@ -179,8 +180,28 @@ namespace Image_filtering
             }
 
             UniformQuantizationLevel.Visibility = Visibility.Collapsed;
-            //ModifiedImage.Source = UniformColorQuantization((WriteableBitmap)ModifiedImage.Source, levels);
+            ModifiedImage.Source = Quantization.UniformColorQuantization((WriteableBitmap)ModifiedImage.Source, levels);
         }
 
+        private void PopularityQuantization_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+            PopularityQuantizationNum.Visibility = Visibility.Visible;
+        }
+
+        private void ApplyPopularityQuantization_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+
+            if (!int.TryParse(UniformQuantizationLevelTextBox.Text, out int numColors) || numColors < 2 || numColors > 256)
+            {
+                MessageBox.Show("Please enter a valid number between 2 and 256.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            PopularityQuantizationNum.Visibility = Visibility.Collapsed;
+            ModifiedImage.Source = Quantization.PopularityQuantization((WriteableBitmap)ModifiedImage.Source, numColors);
+        }
     }
 }

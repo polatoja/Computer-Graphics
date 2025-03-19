@@ -124,13 +124,19 @@
             <!-- Quantization of Controls -->
             <StackPanel Orientation="Vertical" Margin="5 10">
                 <TextBlock Text="Quantization" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
-                <Button x:Name="UniformQuantization" Content="Uniforme" Click="UniformQuantization_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="UniformQuantization" Content="Uniform" Click="UniformQuantization_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 
                 <StackPanel x:Name="UniformQuantizationLevel" HorizontalAlignment="Center" Visibility="Collapsed">
-                    <TextBox x:Name="UniformQuantizationLevelTextBox" Text="4" FontWeight="Bold" Width="100" TextAlignment="Center"/>
+                    <TextBox x:Name="UniformQuantizationLevelTextBox" Text="3" FontWeight="Bold" Width="100" TextAlignment="Center"/>
                     <Button Content="Apply Quantization" Click="ApplyUniformQuantization_Click"/>
                 </StackPanel>
-                
+
+                <Button x:Name="PopularityQuantization" Content="Popularity" Click="PopularityQuantization_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <StackPanel x:Name="PopularityQuantizationNum" HorizontalAlignment="Center" Visibility="Collapsed">
+                    <TextBox x:Name="PopularityQuantizationNumTextBox" Text="3" FontWeight="Bold" Width="100" TextAlignment="Center"/>
+                    <Button Content="Apply Quantization" Click="ApplyPopularityQuantization_Click"/>
+                </StackPanel>
+
             </StackPanel>
 
         </StackPanel>
