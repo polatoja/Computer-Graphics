@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using static Image_filtering.ConvolutionFilters;
+using static Image_filtering.Filters.ConvolutionFilters;
 
 namespace Image_filtering
 {

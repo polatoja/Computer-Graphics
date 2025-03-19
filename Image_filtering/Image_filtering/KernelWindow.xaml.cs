@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using static Image_filtering.ConvolutionFilters;
+using static Image_filtering.Filters.ConvolutionFilters;
 
 namespace Image_filtering
 {
