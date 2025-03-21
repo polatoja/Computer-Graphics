@@ -178,7 +178,7 @@ namespace Image_filtering
                 MessageBox.Show("Please enter a valid number between 2 and 256.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
+            MessageBox.Show($"{levels}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             UniformQuantizationLevel.Visibility = Visibility.Collapsed;
             ModifiedImage.Source = Quantization.UniformColorQuantization((WriteableBitmap)ModifiedImage.Source, levels);
         }
@@ -195,12 +195,13 @@ namespace Image_filtering
             if (ModifiedImage.Source == null)
                 return;
 
-            if (!int.TryParse(UniformQuantizationLevelTextBox.Text, out int numColors) || numColors < 2 || numColors > 256)
+            if (!int.TryParse(PopularityQuantizationNumTextBox.Text, out int numColors) || numColors < 2 || numColors > 256)
             {
                 MessageBox.Show("Please enter a valid number between 2 and 256.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             PopularityQuantizationNum.Visibility = Visibility.Collapsed;
+            MessageBox.Show($"{numColors}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             ModifiedImage.Source = Quantization.PopularityQuantization((WriteableBitmap)ModifiedImage.Source, numColors);
         }
     }

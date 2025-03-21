@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Linq;
 using System.Collections.Generic;
+using System.Windows;
 
 
 namespace Image_filtering.Filters
@@ -75,13 +76,17 @@ namespace Image_filtering.Filters
             sourceBitmap.CopyPixels(pixelData, stride, 0);
 
             Dictionary<Color, int> colorFrequency = new Dictionary<Color, int>();
+            int temp = 0;
 
             for (int i = 0; i < pixelData.Length; i += 4)
             {
                 Color color = Color.FromRgb(pixelData[i + 2], pixelData[i + 1], pixelData[i]);
 
                 if (colorFrequency.ContainsKey(color))
+                {
                     colorFrequency[color]++;
+                    temp++;
+                }
                 else
                     colorFrequency[color] = 1;
             }
