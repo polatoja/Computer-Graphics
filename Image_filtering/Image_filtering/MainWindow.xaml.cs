@@ -104,20 +104,20 @@ namespace Image_filtering
 
         private void GreyScale_Click(object sender, RoutedEventArgs e)
         {
-            ModifiedImage.Source = Ditchering.ConvertToGrey((WriteableBitmap)ModifiedImage.Source);
+            ModifiedImage.Source = Dithering.ConvertToGrey((WriteableBitmap)ModifiedImage.Source);
         }
 
-        private void RandomDitchering_Click(object sender, RoutedEventArgs e)
+        private void RandomDithering_Click(object sender, RoutedEventArgs e)
         {
-            ModifiedImage.Source = Ditchering.RandomDitchering((WriteableBitmap)ModifiedImage.Source);
+            ModifiedImage.Source = Dithering.RandomDitchering((WriteableBitmap)ModifiedImage.Source);
         }
 
-        private void AverageDitchering_Click(object sender, RoutedEventArgs e)
+        private void AverageDithering_Click(object sender, RoutedEventArgs e)
         {
-            ModifiedImage.Source = Ditchering.AverageDitchering((WriteableBitmap)ModifiedImage.Source);
+            ModifiedImage.Source = Dithering.AverageDitchering((WriteableBitmap)ModifiedImage.Source);
         }
 
-        private void OrderedDitchering_Click(object sender, RoutedEventArgs e)
+        private void OrderedDithering_Click(object sender, RoutedEventArgs e)
         {
             if (ModifiedImage.Source == null)
                 return;
@@ -135,7 +135,7 @@ namespace Image_filtering
                 selectedDitherSize = size;
                 MessageBox.Show($"Dithering size set to: {selectedDitherSize}x{selectedDitherSize}", "Dithering", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                ModifiedImage.Source = Ditchering.OrderedDithering((WriteableBitmap)ModifiedImage.Source, selectedDitherSize);
+                ModifiedImage.Source = Dithering.OrderedDithering((WriteableBitmap)ModifiedImage.Source, selectedDitherSize);
             }
             OrderedDitcheringSize.Visibility = Visibility.Collapsed;
         }
@@ -158,7 +158,7 @@ namespace Image_filtering
                 errorDiffusionType = type;
                 MessageBox.Show($"Error diffusion type: {errorDiffusionType}", "Dithering", MessageBoxButton.OK, MessageBoxImage.Information);
                 
-                ModifiedImage.Source = Ditchering.ErrorDiffusionFunc((WriteableBitmap)ModifiedImage.Source, errorDiffusionType);
+                ModifiedImage.Source = Dithering.ErrorDiffusionFunc((WriteableBitmap)ModifiedImage.Source, errorDiffusionType);
             }
             ErrorDiffusionType.Visibility = Visibility.Collapsed;
         }
@@ -178,7 +178,6 @@ namespace Image_filtering
                 MessageBox.Show("Please enter a valid number between 2 and 256.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            MessageBox.Show($"{levels}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             UniformQuantizationLevel.Visibility = Visibility.Collapsed;
             ModifiedImage.Source = Quantization.UniformColorQuantization((WriteableBitmap)ModifiedImage.Source, levels);
         }
@@ -195,14 +194,34 @@ namespace Image_filtering
             if (ModifiedImage.Source == null)
                 return;
 
-            if (!int.TryParse(PopularityQuantizationNumTextBox.Text, out int numColors) || numColors < 2 || numColors > 256)
+            if (!int.TryParse(PopularityQuantizationNumTextBox.Text, out int numColors) || numColors < 2 || numColors > 5000)
             {
                 MessageBox.Show("Please enter a valid number between 2 and 256.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             PopularityQuantizationNum.Visibility = Visibility.Collapsed;
-            MessageBox.Show($"{numColors}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             ModifiedImage.Source = Quantization.PopularityQuantization((WriteableBitmap)ModifiedImage.Source, numColors);
+        }
+
+        private void MedianCutQuantization_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+            MedianCutQuantizationNum.Visibility = Visibility.Visible;
+        }
+
+        private void ApplyMedianCutQuantization_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+
+            if (!int.TryParse(MedianCutQuantizationNumTextBox.Text, out int numColors) || numColors < 2 || numColors > 5000)
+            {
+                MessageBox.Show("Please enter a valid number between 2 and 256.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            MedianCutQuantizationNum.Visibility = Visibility.Collapsed;
+            ModifiedImage.Source = Quantization.MedianCutQuantization((WriteableBitmap)ModifiedImage.Source, numColors);
         }
     }
 }

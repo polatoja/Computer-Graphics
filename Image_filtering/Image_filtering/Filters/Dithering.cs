@@ -9,7 +9,7 @@ using static Image_filtering.Filters.ErrorDiffusion;
 
 namespace Image_filtering.Filters
 {
-    public static class Ditchering
+    public static class Dithering
     {
         public static WriteableBitmap ConvertToGrey(WriteableBitmap source)
         {

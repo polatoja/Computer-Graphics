@@ -101,10 +101,10 @@
             <!-- Ditchering Controls -->
             <StackPanel Orientation="Vertical" Margin="5 10">
                 <Button x:Name="GreyScale" Content="Gray Scale" Click="GreyScale_Click" Style="{StaticResource RoundedButtonStyle}"/>
-                <TextBlock Text="Ditchering" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
-                <Button x:Name="RandomDitchering" Content="Random" Click="RandomDitchering_Click" Style="{StaticResource RoundedButtonStyle}"/>
-                <Button x:Name="AverageDitchering" Content="Average" Click="AverageDitchering_Click" Style="{StaticResource RoundedButtonStyle}"/>
-                <Button x:Name="OrderedDitchering" Content="Ordered" Click="OrderedDitchering_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <TextBlock Text="Dithering" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
+                <Button x:Name="RandomDithering" Content="Random" Click="RandomDithering_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="AverageDithering" Content="Average" Click="AverageDithering_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="OrderedDithering" Content="Ordered" Click="OrderedDithering_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <StackPanel x:Name="OrderedDitcheringSize" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Visibility="Collapsed">
                     <Button Content="2x2" Click="DitherSize_Click" Tag="2"/>
                     <Button Content="3x3" Click="DitherSize_Click" Tag="3"/>
@@ -135,6 +135,12 @@
                 <StackPanel x:Name="PopularityQuantizationNum" HorizontalAlignment="Center" Visibility="Collapsed">
                     <TextBox x:Name="PopularityQuantizationNumTextBox" Text="3" FontWeight="Bold" Width="100" TextAlignment="Center"/>
                     <Button Content="Apply Quantization" Click="ApplyPopularityQuantization_Click"/>
+                </StackPanel>
+
+                <Button x:Name="MedianCutQuantization" Content="Median Cut" Click="MedianCutQuantization_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <StackPanel x:Name="MedianCutQuantizationNum" HorizontalAlignment="Center" Visibility="Collapsed">
+                    <TextBox x:Name="MedianCutQuantizationNumTextBox" Text="3" FontWeight="Bold" Width="100" TextAlignment="Center"/>
+                    <Button Content="Apply Quantization" Click="ApplyMedianCutQuantization_Click"/>
                 </StackPanel>
 
             </StackPanel>
