@@ -72,7 +72,7 @@ namespace Image_filtering.Filters
                                    PixelFormats.Bgra32, null, pixelData, stride));
         }
 
-        public static WriteableBitmap AverageDitchering(WriteableBitmap source)
+        public static WriteableBitmap AverageDitchering(WriteableBitmap source, int numShades)
         {
             int height = source.PixelHeight;
             int width = source.PixelWidth;
@@ -81,15 +81,33 @@ namespace Image_filtering.Filters
 
             source.CopyPixels(pixelData, stride, 0);
 
+            byte[] shades = new byte[numShades];
+            for(int i = 0; i < numShades; i++)
+            {
+                shades[i] = (byte)(i * 255 / (numShades - 1));
+            }
+
             for (int i = 0; i < pixelData.Length; i += 4)
             {
-                byte newColor = 0;
                 byte grey = (byte)(pixelData[i] + pixelData[i+1] + pixelData[i+2]);
-                if (grey > 128) newColor = 255;
 
-                pixelData[i] = newColor;
-                pixelData[i + 1] = newColor;
-                pixelData[i + 2] = newColor;
+                byte closest = shades[0];
+                int minDiff = Math.Abs(grey - closest);
+
+                for (int j = 1; j < numShades; j++)
+                {
+                    int diff = Math.Abs(grey - shades[j]);
+                    if (diff < minDiff)
+                    {
+                        minDiff = diff;
+                        closest = shades[j];
+                    }
+                }
+
+                pixelData[i] = closest;
+                pixelData[i + 1] = closest;
+                pixelData[i + 2] = closest;
+
             }
 
             return new WriteableBitmap(BitmapSource.Create(width, height, source.DpiX, source.DpiY,

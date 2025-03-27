@@ -104,6 +104,10 @@
                 <TextBlock Text="Dithering" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"/>
                 <Button x:Name="RandomDithering" Content="Random" Click="RandomDithering_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="AverageDithering" Content="Average" Click="AverageDithering_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <StackPanel x:Name="AverageDitcheringNum" HorizontalAlignment="Center" Visibility="Collapsed">
+                    <TextBox x:Name="AverageDitcheringNumTextBox" Text="3" FontWeight="Bold" Width="100" TextAlignment="Center"/>
+                    <Button Content="Apply Average" Click="ApplyAverageDitchering_Click"/>
+                </StackPanel>
                 <Button x:Name="OrderedDithering" Content="Ordered" Click="OrderedDithering_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <StackPanel x:Name="OrderedDitcheringSize" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" Visibility="Collapsed">
                     <Button Content="2x2" Click="DitherSize_Click" Tag="2"/>

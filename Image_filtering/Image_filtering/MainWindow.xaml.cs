@@ -114,7 +114,26 @@ namespace Image_filtering
 
         private void AverageDithering_Click(object sender, RoutedEventArgs e)
         {
-            ModifiedImage.Source = Dithering.AverageDitchering((WriteableBitmap)ModifiedImage.Source);
+            if (ModifiedImage.Source == null)
+                return;
+            if (AverageDitcheringNum.Visibility == Visibility.Visible)
+                AverageDitcheringNum.Visibility = Visibility.Collapsed;
+            AverageDitcheringNum.Visibility = Visibility.Visible;
+        }
+
+        private void ApplyAverageDitchering_Click(object sender, RoutedEventArgs e)
+        {
+            if (ModifiedImage.Source == null)
+                return;
+
+            if (!int.TryParse(AverageDitcheringNumTextBox.Text, out int numShades) || numShades < 2 || numShades > 5000)
+            {
+                MessageBox.Show("Please enter a valid number between 2 and 256.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            AverageDitcheringNum.Visibility = Visibility.Collapsed;
+            MessageBox.Show($"Number of colors: {numShades}");
+            ModifiedImage.Source = Dithering.AverageDitchering((WriteableBitmap)ModifiedImage.Source, numShades);
         }
 
         private void OrderedDithering_Click(object sender, RoutedEventArgs e)
@@ -207,6 +226,8 @@ namespace Image_filtering
         {
             if (ModifiedImage.Source == null)
                 return;
+            if (MedianCutQuantizationNum.Visibility == Visibility.Visible)
+                 MedianCutQuantizationNum.Visibility = Visibility.Collapsed;
             MedianCutQuantizationNum.Visibility = Visibility.Visible;
         }
 
@@ -221,7 +242,9 @@ namespace Image_filtering
                 return;
             }
             MedianCutQuantizationNum.Visibility = Visibility.Collapsed;
+            MessageBox.Show($"Number of colors: {numColors}");
             ModifiedImage.Source = Quantization.MedianCutQuantization((WriteableBitmap)ModifiedImage.Source, numColors);
         }
+
     }
 }
