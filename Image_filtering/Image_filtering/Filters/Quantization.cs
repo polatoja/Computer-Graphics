@@ -128,7 +128,10 @@ namespace Image_filtering.Filters
             int rangeB = maxB - minB;
 
             Func<(byte, byte, byte), byte> selector = rangeR >= rangeG && rangeR >= rangeB
-            ? c => c.Item3 : (rangeG >= rangeB ? c => c.Item2 : c => c.Item1);
+             ? c => c.Item1  // Red
+             : (rangeG >= rangeB ? c => c.Item2  // Green
+                                 : c => c.Item3); // Blue
+
 
             var sorted = list.OrderBy(selector).ToList();
             int mid = sorted.Count / 2;
@@ -187,8 +190,9 @@ namespace Image_filtering.Filters
                         return Math.Max(rRange, Math.Max(gRange, bRange));
                     })
                     .First();
+        
 
-                // var boxToSplit = dividedCubes.OrderByDescending(b => b.Count).First();
+                //var boxToSplit = dividedCubes.OrderByDescending(b => b.Count).First();
                 dividedCubes.Remove(boxToSplit);
 
                 var (cube1, cube2) = DivideIntoParts(boxToSplit);
