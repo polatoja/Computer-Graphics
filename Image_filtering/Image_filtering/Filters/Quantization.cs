@@ -178,9 +178,17 @@ namespace Image_filtering.Filters
 
             while (dividedCubes.Count < numColors)
             {
-                var boxToSplit = dividedCubes.OrderByDescending(b => b.Count).First();
-                // wybierać boxy z największą rozpiętością
-                // nie po ilości kolorów, tylko największa rozpiętość w pixelach
+                var boxToSplit = dividedCubes
+                    .OrderByDescending(b =>
+                    {
+                        var rRange = b.Max(c => c.Item1) - b.Min(c => c.Item1);
+                        var gRange = b.Max(c => c.Item2) - b.Min(c => c.Item2);
+                        var bRange = b.Max(c => c.Item3) - b.Min(c => c.Item3);
+                        return Math.Max(rRange, Math.Max(gRange, bRange));
+                    })
+                    .First();
+
+                // var boxToSplit = dividedCubes.OrderByDescending(b => b.Count).First();
                 dividedCubes.Remove(boxToSplit);
 
                 var (cube1, cube2) = DivideIntoParts(boxToSplit);
