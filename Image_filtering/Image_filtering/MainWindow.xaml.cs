@@ -241,5 +241,19 @@ namespace Image_filtering
             ModifiedImage.Source = Quantization.MedianCutQuantization((WriteableBitmap)ModifiedImage.Source, numColors);
         }
 
+        private void ConvertToHSV_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedImage.Source == null)
+                return;
+
+            var hImage = HSVWindow.ConvertToHSV((WriteableBitmap)SelectedImage.Source, "H");
+            var sImage = HSVWindow.ConvertToHSV((WriteableBitmap)SelectedImage.Source, "S");
+            var vImage = HSVWindow.ConvertToHSV((WriteableBitmap)SelectedImage.Source, "V");
+
+            var rgb = HSVWindow.MergeHSVToRGB((WriteableBitmap)hImage, (WriteableBitmap)sImage, (WriteableBitmap)vImage);
+
+            HSVWindow hsvWindow = new HSVWindow(hImage, sImage, vImage, rgb);
+            hsvWindow.Show();
+        }
     }
 }

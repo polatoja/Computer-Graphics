@@ -82,14 +82,14 @@ namespace Image_filtering.Filters
             source.CopyPixels(pixelData, stride, 0);
 
             byte[] shades = new byte[numShades];
-            for(int i = 0; i < numShades; i++)
+            for (int i = 0; i < numShades; i++)
             {
                 shades[i] = (byte)(i * 255 / (numShades - 1));
             }
 
             for (int i = 0; i < pixelData.Length; i += 4)
             {
-                byte grey = (byte)(pixelData[i] + pixelData[i+1] + pixelData[i+2]);
+                byte grey = (byte)(pixelData[i] + pixelData[i + 1] + pixelData[i + 2]);
 
                 byte closest = shades[0];
                 int minDiff = Math.Abs(grey - closest);

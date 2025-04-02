@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Image_filtering\Image_filtering\App.xaml
-2540181083
+3172036316
 
-141800842615
+15-530668527
 198-688555687
-KernelWindow.xaml;MainWindow.xaml;
+HSVWindow.xaml;KernelWindow.xaml;MainWindow.xaml;
 
 False
 

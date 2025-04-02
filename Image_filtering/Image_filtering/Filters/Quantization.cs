@@ -29,17 +29,17 @@ namespace Image_filtering.Filters
 
             for (int i = 0; i < pixelData.Length; i += 4)
             {
-                byte blue = pixelData[i];     // Blue
+                byte red = pixelData[i];     // Blue
                 byte green = pixelData[i + 1]; // Green
-                byte red = pixelData[i + 2]; // Red
+                byte blue = pixelData[i + 2]; // Red
 
-                byte qR = (byte)((red / step) * step + halfStep);
-                byte qG = (byte)((green / step) * step + halfStep);
-                byte qB = (byte)((blue / step) * step + halfStep);
+                byte qR = (byte)((red / step) * step);
+                byte qG = (byte)((green / step) * step);
+                byte qB = (byte)((blue / step) * step);
 
-                pixelData[i] = qB;
+                pixelData[i] = qR;
                 pixelData[i + 1] = qG;
-                pixelData[i + 2] = qR;
+                pixelData[i + 2] = qB;
             }
 
             WriteableBitmap quantizedBitmap = new WriteableBitmap(sourceBitmap);
