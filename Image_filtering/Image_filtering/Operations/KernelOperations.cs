@@ -109,22 +109,5 @@ namespace Image_filtering.Operations
             }
         }
 
-        public static void ChangeAnchor(Window owner, WriteableBitmap image)
-        {
-            AnchorWindow anchorWindow = new AnchorWindow
-            {
-                Owner = owner
-            };
-
-            if (anchorWindow.ShowDialog() == true)
-            {
-                Kernel customKernel = anchorWindow.SelectedKernel;
-
-                if (customKernel.KernelValues != null && image is WriteableBitmap writableBitmap)
-                {
-                    owner.GetType().GetProperty("ModifiedImage")?.SetValue(owner, ApplyConvolutionFilter(writableBitmap, customKernel));
-                }
-            }
-        }
     }
 }

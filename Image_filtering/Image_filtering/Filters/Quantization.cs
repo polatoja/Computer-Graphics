@@ -192,7 +192,6 @@ namespace Image_filtering.Filters
                     .First();
         
 
-                //var boxToSplit = dividedCubes.OrderByDescending(b => b.Count).First();
                 dividedCubes.Remove(boxToSplit);
 
                 var (cube1, cube2) = DivideIntoParts(boxToSplit);

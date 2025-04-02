@@ -97,11 +97,6 @@ namespace Image_filtering
             }
         }
 
-        private void ChangeAnchor_Click(object sender, RoutedEventArgs e)
-        {
-            KernelOperations.ChangeAnchor(this, (WriteableBitmap)ModifiedImage.Source);
-        }
-
         private void GreyScale_Click(object sender, RoutedEventArgs e)
         {
             ModifiedImage.Source = Dithering.ConvertToGrey((WriteableBitmap)ModifiedImage.Source);

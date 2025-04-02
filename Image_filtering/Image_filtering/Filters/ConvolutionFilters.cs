@@ -22,19 +22,7 @@ namespace Image_filtering.Filters
             public int Cols { get; set; }
             public int OffsetX { get; set; }
             public int OffsetY { get; set; }
-            public int AnchorRow { get; set; }
-            public int AnchorCol { get; set; }
 
-            public Kernel(double[,] kernel, int rows, int cols, int offsetX, int offsetY, int anchorRow, int anchorCol)
-            {
-                KernelValues = kernel;
-                Rows = rows;
-                Cols = cols;
-                OffsetX = offsetX;
-                OffsetY = offsetY;
-                AnchorRow = anchorRow;
-                AnchorCol = anchorCol;
-            }
             public Kernel(double[,] kernel, int rows, int cols, int offsetX, int offsetY)
             {
                 KernelValues = kernel;
@@ -50,8 +38,6 @@ namespace Image_filtering.Filters
                 Cols = cols;
                 OffsetX = cols / 2;
                 OffsetY = rows / 2;
-                AnchorRow = 0;
-                AnchorCol = 0;
             }
         }
 
@@ -103,9 +89,6 @@ namespace Image_filtering.Filters
             int offset_x = kernel.OffsetX;
             int offset_y = kernel.OffsetY;
 
-            int anchorRow = kernel.AnchorRow;
-            int anchorCol = kernel.AnchorCol;
-
             for (int y = offset_y; y < height - offset_y; y++)
             {
                 for (int x = offset_x; x < width - offset_x; x++)
@@ -131,7 +114,7 @@ namespace Image_filtering.Filters
                         }
                     }
 
-                    int newIndex = (y - anchorRow) * stride + (x - anchorCol) * 4;
+                    int newIndex = y * stride + x * 4;
                     if (newIndex >= 0 && newIndex + 3 < resultData.Length) // Ensure within bounds
                     {
                         resultData[newIndex] = (byte)Math.Clamp((int)sum[0], 0, 255);

@@ -40,6 +40,3 @@ C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Image_filtering\Image_filterin
 C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Image_filtering\Image_filtering\obj\Debug\net8.0-windows\ref\Image_filtering.dll
 C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Image_filtering\Image_filtering\obj\Debug\net8.0-windows\KernelWindow.baml
 C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Image_filtering\Image_filtering\obj\Debug\net8.0-windows\KernelWindow.g.cs
-C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Image_filtering\Image_filtering\obj\Debug\net8.0-windows\AnchorWindow.g.cs
-C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Image_filtering\Image_filtering\obj\Debug\net8.0-windows\Image_filtering_MarkupCompile.lref
-C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Image_filtering\Image_filtering\obj\Debug\net8.0-windows\AnchorWindow.baml
