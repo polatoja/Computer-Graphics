@@ -92,7 +92,6 @@ namespace Rasterization.Tools
                     lines.Add(selectedLine);
                 }
 
-                MessageBox.Show("Line edited.");
                 draggingStart = false;
                 draggingEnd = false;
                 selectedLine = null;

@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v8.0": {
       "Rasterization/1.0.0": {
         "dependencies": {
-          "Extended.Wpf.Toolkit": "4.7.25104.5739"
+          "Extended.Wpf.Toolkit": "4.7.25104.5739",
+          "Newtonsoft.Json": "13.0.3"
         },
         "runtime": {
           "Rasterization.dll": {}
@@ -75,6 +76,14 @@
             "locale": "zh-Hans"
           }
         }
+      },
+      "Newtonsoft.Json/13.0.3": {
+        "runtime": {
+          "lib/net6.0/Newtonsoft.Json.dll": {
+            "assemblyVersion": "13.0.0.0",
+            "fileVersion": "13.0.3.27908"
+          }
+        }
       }
     }
   },
@@ -90,6 +99,13 @@
       "sha512": "sha512-x6fCMLeExVZjyPl6f9/NRITW4uzT3xBZA40CBWA9YlH4/w6rKzsIeTDwYvavdmJLrl43p0LIFSQChISCnTSR6Q==",
       "path": "extended.wpf.toolkit/4.7.25104.5739",
       "hashPath": "extended.wpf.toolkit.4.7.25104.5739.nupkg.sha512"
+    },
+    "Newtonsoft.Json/13.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
+      "path": "newtonsoft.json/13.0.3",
+      "hashPath": "newtonsoft.json.13.0.3.nupkg.sha512"
     }
   }
 }

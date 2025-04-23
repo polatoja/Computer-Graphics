@@ -1,12 +1,18 @@
-﻿using Rasterization.Drawing;
+﻿using Microsoft.Win32;
+using Rasterization.Drawing;
 using Rasterization.Tools;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+
 
 namespace Rasterization
 {
@@ -42,12 +48,25 @@ namespace Rasterization
         private bool isMovingPolygonEdge = false;
         private bool isMovingPolygon = false;
 
+        // PACMAN
+        private List<CustomPacMan> pacmans = new();
+        private PacManTool pacmanTool;
+
+        private bool isDrawingPacMan = false;
+
+        private class Shapes
+        {
+            public List<CustomLine> Lines { get; set; } = new();
+            public List<CustomCircle> Circles { get; set; } = new();
+            public List<CustomPolygon> Polygons { get; set; } = new();
+        }
         public MainWindow()
         {
             InitializeComponent();
             lineTool = new LineTool(DrawingCanvas, lines);
             circleTool = new CircleTool(DrawingCanvas, circles);
             polygonTool = new PolygonTool(DrawingCanvas, polygons);
+            pacmanTool = new PacManTool(DrawingCanvas, pacmans);
 
             DrawingCanvas.MouseLeftButtonDown += Canvas_MouseLeftButtonDown;
             DrawingCanvas.MouseRightButtonDown += Canvas_MouseRightButtonDown;
@@ -424,6 +443,114 @@ namespace Rasterization
             }
         }
 
+        private void SaveCanva_Click(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog
+            {
+                Filter = "JSON Files (*.json)|*.json",
+                FileName = "shapes"
+            };
+
+            if (saveDialog.ShowDialog() == true)
+            {
+                var canvasData = new Shapes
+                {
+                    Lines = lines,
+                    Circles = circles,
+                    Polygons = polygons
+                };
+
+                Newtonsoft.Json.JsonSerializer serializer = new()
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    MaxDepth = 1,
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+                using StreamWriter sw = new(saveDialog.FileName);
+                using JsonWriter writer = new JsonTextWriter(sw);
+                serializer.Serialize(writer, canvasData);
+            }
+        }
+
+
+        private void LoadCanva_Click(object sender, RoutedEventArgs e)
+        {
+            var openDialog = new OpenFileDialog
+            {
+                Filter = "JSON Files (*.json)|*.json"
+            };
+
+            if (openDialog.ShowDialog() == true)
+            {
+                string json = File.ReadAllText(openDialog.FileName);
+
+                var loadedShapes = System.Text.Json.JsonSerializer.Deserialize<Shapes>(json);
+
+                if (loadedShapes != null)
+                {
+                    // Clear canvas and tools
+                    DrawingCanvas.Children.Clear();
+
+                    lines.Clear();
+                    circles.Clear();
+                    polygons.Clear();
+
+                    // Refill lines
+                    if (loadedShapes.Lines != null)
+                    {
+                        lines.AddRange(loadedShapes.Lines);
+                        lineTool.Lines.Clear();
+                        lineTool.Lines.AddRange(lines);
+                        foreach (var line in lineTool.Lines)
+                            line.RedrawLine(DrawingCanvas); // Use tool's draw method
+                    }
+
+                    // Refill circles
+                    if (loadedShapes.Circles != null)
+                    {
+                        circles.AddRange(loadedShapes.Circles);
+                        circleTool.Circles.Clear();
+                        circleTool.Circles.AddRange(circles);
+                        foreach (var circle in circleTool.Circles)
+                            circle.RedrawCircle(DrawingCanvas); // Use tool's draw method
+                    }
+
+                    // Refill polygons
+                    if (loadedShapes.Polygons != null)
+                    {
+                        polygons.AddRange(loadedShapes.Polygons);
+                        polygonTool.Polygons.Clear();
+                        polygonTool.Polygons.AddRange(polygons);
+                        foreach (var polygon in polygonTool.Polygons)
+                            polygon.RedrawPolygon(DrawingCanvas); // Use tool's draw method
+                    }
+                }
+            }
+        }
+
+
+        private void DrawPacMan_Click(object sender, RoutedEventArgs e)
+        {
+            isThickening = false;
+            isDeleting = false;
+            isChangingColors = false;
+
+            isDrawingLine = false;
+            isEditingLine = false;
+
+            isDrawingCircle = false;
+            isEditingCircle = false;
+            isMovingCircle = false;
+
+            isDrawingPolygon = false;
+            isMovingPolygonVertex = false;
+            isMovingPolygonEdge = false;
+            isMovingPolygon = false;
+
+            isDrawingPacMan = true;
+        }
+
+
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point click = e.GetPosition(DrawingCanvas);
@@ -434,6 +561,9 @@ namespace Rasterization
                 circleTool.StartDraw(click);
             else if (isDrawingPolygon)
                 polygonTool.StartDraw(click);
+            else if (isDrawingPacMan)
+                pacmanTool.StartDraw(click);
+
             else if (isEditingLine)
             {
                 if (lineTool.IsDragging)
@@ -477,7 +607,6 @@ namespace Rasterization
                 else
                     polygonTool.TryMove(click);
             }
-
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)

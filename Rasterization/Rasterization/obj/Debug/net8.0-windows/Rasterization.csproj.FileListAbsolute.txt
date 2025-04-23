@@ -38,3 +38,4 @@ C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Rasterization\Rasterization\bi
 C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Rasterization\Rasterization\bin\Debug\net8.0-windows\sv\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Rasterization\Rasterization\bin\Debug\net8.0-windows\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Rasterization\Rasterization\obj\Debug\net8.0-windows\Rasterization.csproj.CopyComplete
+C:\Users\majat\Dokumenty\GitHub\Computer-Graphics\Rasterization\Rasterization\bin\Debug\net8.0-windows\Newtonsoft.Json.dll

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Shapes;
 using Rasterization.Tools;
 using System.Collections;
+using System.Text.Json.Serialization;
 
 namespace Rasterization.Drawing
 {
@@ -20,6 +21,7 @@ namespace Rasterization.Drawing
         public int Thickness { get; set; } = 1;
         public Color myColor { get; set; } = Colors.Black;
         public bool UseAntialiasing { get; set; } = false;
+        [JsonIgnore]
         public List<Rectangle> Pixels { get; set; } = new();
 
         public void DrawPolygon(Canvas canvas)
@@ -31,28 +33,16 @@ namespace Rasterization.Drawing
                 if (i + 1 < numVertices)
                 {
                     if (UseAntialiasing)
-                    {
                         AntiAliasing.DrawWuLine(canvas, Vertices[i], Vertices[i + 1], myColor, Pixels);
-                        MessageBox.Show("Added XU WU " + canvas.Children.Count + " " + Pixels.Count);
-                    }
                     else
-                    {
                         DrawLineAliasing(canvas, Vertices[i], Vertices[i + 1]);
-                        MessageBox.Show("NOT " + canvas.Children.Count + " " + Pixels.Count);
-                    }
                 }
                 else
                 {
                     if (UseAntialiasing)
-                    {
                         AntiAliasing.DrawWuLine(canvas, Vertices[0], Vertices[i], myColor, Pixels);
-                        MessageBox.Show("Added XU WU " + canvas.Children.Count + " " + Pixels.Count);
-                    }
                     else
-                    {
                         DrawLineAliasing(canvas, Vertices[0], Vertices[i]);
-                        MessageBox.Show("NOT " + canvas.Children.Count + " " + Pixels.Count);
-                    }
                 }
             }
         }
@@ -155,7 +145,6 @@ namespace Rasterization.Drawing
         public void RedrawPolygon(Canvas canvas)
         {
             RemovePolygon(canvas);
-            MessageBox.Show("Removed" + canvas.Children.Count);
             DrawPolygon(canvas);
         }
 

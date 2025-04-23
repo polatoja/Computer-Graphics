@@ -61,6 +61,8 @@
                 <Button x:Name="DeleteShape" Content="Delete Shape" Click="DeleteShape_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="ChangeColors" Content="Change Colors" Click="ChangeColors_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <CheckBox x:Name="AntiAlisaing" Content="AntiAlisaing" IsChecked="False" Checked="AntiAlisaing_Checked" Unchecked="AntiAlisaing_Unchecked"/>
+                <Button x:Name="SaveShape" Content="Save Canva" Click="SaveCanva_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="LoadShape" Content="Load Canva" Click="LoadCanva_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
             <StackPanel VerticalAlignment="Center" Margin="15">
@@ -82,6 +84,11 @@
                 <Button x:Name="MovePolygonVertex" Content="Move Vertex" Click="MovePolygonVertex_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="MovePolygonEdge" Content="Move Edge" Click="MovePolygonEdge_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="MovePolygon" Content="Move Polygon" Click="MovePolygon_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Center" Margin="15">
+                <TextBlock Text="PacMan Shape" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button x:Name="DrawPacMan" Content="Draw Pac-Man" Click="DrawPacMan_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
         </StackPanel>
 

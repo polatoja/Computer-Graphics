@@ -50,6 +50,10 @@
             "Extended.Wpf.Toolkit": {
               "target": "Package",
               "version": "[4.7.25104.5739, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
             }
           },
           "imports": [

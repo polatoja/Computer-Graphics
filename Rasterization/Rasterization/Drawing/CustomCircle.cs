@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using Rasterization.Tools;
+using System.Text.Json.Serialization;
 
 namespace Rasterization.Drawing
 {
@@ -19,6 +20,7 @@ namespace Rasterization.Drawing
         public int Thickness { get; set; } = 1;
         public Color myColor { get; set; } = Colors.Black;
         public bool UseAntialiasing { get; set; } = false;
+        [JsonIgnore]
         public List<Rectangle> Pixels { get; set; } = new();
 
         public void DrawCircle(Canvas canvas)
