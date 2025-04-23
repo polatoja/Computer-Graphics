@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace Rasterization.Tools
 {
@@ -16,7 +17,8 @@ namespace Rasterization.Tools
         private bool draggingStart = false;
         private bool draggingEnd = false;
         public bool IsDragging => draggingStart || draggingEnd;
-
+        public List<CustomLine> Lines => lines;
+        public bool UseAntialiasing = false;
 
         public LineTool(Canvas canvas, List<CustomLine> lines)
         {
@@ -36,11 +38,15 @@ namespace Rasterization.Tools
                 {
                     Start = startPoint.Value,
                     End = click,
-                    Thickness = 1
+                    Thickness = 1,
+                    myColor = Colors.Black,
+                    UseAntialiasing = UseAntialiasing
                 };
+
                 line.DrawLine(canvas);
                 lines.Add(line);
                 startPoint = null;
+
             }
         }
 
@@ -126,6 +132,19 @@ namespace Rasterization.Tools
             startPoint = null;
             draggingStart = false;
             draggingEnd = false;
+        }
+
+        public void TryChangeColor(Point click, Color color)
+        {
+            foreach (var line in lines)
+            {
+                if (line.IsNearLine(click))
+                {
+                    line.myColor = color;
+                    line.RedrawLine(canvas);
+                    return;
+                }
+            }
         }
     }
 }

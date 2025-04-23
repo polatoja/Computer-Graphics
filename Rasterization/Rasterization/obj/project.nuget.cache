@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "9IJZxATiTU/l6p7ytTdB0e+9+RKYhxdnUUOterZgLvvt6LbKVfv5GYmp4eCyJ6f9ME8GamwxICkXULLlizHXLQ==",
+  "dgSpecHash": "t8Sfsn0lY2SbcJu3iLqtUEFWx8CbJ82l9gR10ICc/9DBJl0g3UGB0Z79GvaWBFoMvKnfqLUJ9ZcYYs+0oXdJhA==",
   "success": true,
   "projectFilePath": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\Rasterization.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\majat\\.nuget\\packages\\extended.wpf.toolkit\\4.7.25104.5739\\extended.wpf.toolkit.4.7.25104.5739.nupkg.sha512"
+  ],
   "logs": []
 }

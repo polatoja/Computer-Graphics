@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using Rasterization.Tools;
 
 namespace Rasterization.Drawing
 {
@@ -16,11 +17,19 @@ namespace Rasterization.Drawing
         public Point Start { get; set; }
         public int Radius { get; set; } = 1;
         public int Thickness { get; set; } = 1;
+        public Color myColor { get; set; } = Colors.Black;
+        public bool UseAntialiasing { get; set; } = false;
         public List<Rectangle> Pixels { get; set; } = new();
 
         public void DrawCircle(Canvas canvas)
         {
             Pixels.Clear();
+
+            if(UseAntialiasing)
+            {
+                AntiAliasing.DrawWuCircle(canvas, Start, Radius, myColor, Pixels);
+                return;
+            }
 
             int x0 = (int)Start.X;
             int y0 = (int)Start.Y;
@@ -77,20 +86,25 @@ namespace Rasterization.Drawing
 
         private void DrawPixel(Canvas canvas, int x, int y)
         {
-            int half = Thickness / 2;
+            bool[,] brush = BrushUtils.CreateCircularBrush(Thickness);
+            int size = brush.GetLength(0);
+            int center = size / 2;
 
-            for (int dx = -half; dx <= half; dx++)
+            for (int dy = 0; dy < size; dy++)
             {
-                for (int dy = -half; dy <= half; dy++)
+                for (int dx = 0; dx < size; dx++)
                 {
+                    if (!brush[dx, dy]) continue;
+
                     Rectangle rect = new Rectangle
                     {
                         Width = 1,
                         Height = 1,
-                        Fill = Brushes.Black
+                        Fill = new SolidColorBrush(myColor)
                     };
-                    Canvas.SetLeft(rect, x + dx);
-                    Canvas.SetTop(rect, y + dy);
+
+                    Canvas.SetLeft(rect, x + dx - center);
+                    Canvas.SetTop(rect, y + dy - center);
                     canvas.Children.Add(rect);
                     Pixels.Add(rect);
                 }

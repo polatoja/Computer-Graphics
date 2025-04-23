@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace Rasterization
@@ -13,7 +15,8 @@ namespace Rasterization
 
         private bool isThickening = false;
         private bool isDeleting = false;
-
+        private bool isChangingColors = false;
+        private Color selectedColor = Colors.Black;
 
         // LINE
         private List<CustomLine> lines = new();
@@ -55,6 +58,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingLine = true;
             isEditingLine = false;
@@ -73,6 +77,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingLine = false;
             isEditingLine = true;
@@ -91,6 +96,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingLine = false;
             isEditingLine = false;
@@ -109,6 +115,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingLine = false;
             isEditingLine = false;
@@ -127,6 +134,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingCircle = true;
             isEditingCircle = false;
@@ -145,6 +153,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingCircle = false;
             isEditingCircle = true;
@@ -163,6 +172,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingCircle = false;
             isEditingCircle = false;
@@ -181,6 +191,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingCircle = false;
             isEditingCircle = false;
@@ -199,6 +210,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingCircle = false;
             isEditingCircle = false;
@@ -217,6 +229,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingPolygon = true;
             isMovingPolygonVertex = false;
@@ -235,6 +248,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = true;
@@ -253,6 +267,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = false;
@@ -271,6 +286,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = false;
@@ -296,6 +312,7 @@ namespace Rasterization
         {
             isThickening = true;
             isDeleting = false;
+            isChangingColors = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = false;
@@ -313,6 +330,7 @@ namespace Rasterization
         {
             isThickening = false;
             isDeleting = true;
+            isChangingColors = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = false;
@@ -324,6 +342,86 @@ namespace Rasterization
             isDrawingCircle = false;
             isEditingCircle = false;
             isMovingCircle = false;
+        }
+
+        private void ChangeColors_Click(object sender, RoutedEventArgs e)
+        {
+            isThickening = false;
+            isDeleting = false;
+            isChangingColors = true;
+
+            isDrawingPolygon = false;
+            isMovingPolygonVertex = false;
+            isMovingPolygon = false;
+
+            isDrawingLine = false;
+            isEditingLine = false;
+
+            isDrawingCircle = false;
+            isEditingCircle = false;
+            isMovingCircle = false;
+
+            ColorPopup.IsOpen = true;
+        }
+
+        private void ApplyPopupColor_Click(object sender, RoutedEventArgs e)
+        {
+            if (PopupColorPicker.SelectedColor.HasValue)
+            {
+                selectedColor = PopupColorPicker.SelectedColor.Value;
+            }
+
+            ColorPopup.IsOpen = false;
+        }
+        
+        private void AntiAlisaing_Checked(object sender, RoutedEventArgs e)
+        {
+            lineTool.UseAntialiasing = true;
+            circleTool.UseAntialiasing = true;
+            polygonTool.UseAntialiasing = true;
+
+            foreach (var line in lineTool.Lines)
+            {
+                line.UseAntialiasing = true;
+                line.RedrawLine(DrawingCanvas);
+            }
+            foreach (var circle in circleTool.Circles)
+            {
+                circle.UseAntialiasing = true;
+                circle.RedrawCircle(DrawingCanvas);
+            }
+            foreach (var polygon in polygonTool.Polygons)
+            {
+                polygon.UseAntialiasing = true;
+                polygon.RedrawPolygon(DrawingCanvas);
+            }
+        }
+        private void AntiAlisaing_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if(!lineTool.UseAntialiasing || !circleTool.UseAntialiasing || !polygonTool.UseAntialiasing)
+                return;
+            else
+            {
+                lineTool.UseAntialiasing = false;
+                circleTool.UseAntialiasing = false;
+                polygonTool.UseAntialiasing = false;
+
+                foreach (var line in lineTool.Lines)
+                {
+                    line.UseAntialiasing = false;
+                    line.RedrawLine(DrawingCanvas);
+                }
+                foreach (var circle in circleTool.Circles)
+                {
+                    circle.UseAntialiasing = false;
+                    circle.RedrawCircle(DrawingCanvas);
+                }
+                foreach (var polygon in polygonTool.Polygons)
+                {
+                    polygon.UseAntialiasing = false;
+                    polygon.RedrawPolygon(DrawingCanvas);
+                }
+            }
         }
 
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -411,6 +509,12 @@ namespace Rasterization
                 lineTool.TryIncreaseThickness(click);
                 circleTool.TryIncreaseThickness(click);
                 polygonTool.TryIncreaseThickness(click);
+            }
+            else if (isChangingColors)
+            {
+                lineTool.TryChangeColor(click, selectedColor);
+                circleTool.TryChangeColor(click, selectedColor);
+                polygonTool.TryChangeColor(click, selectedColor);
             }
         }
     }

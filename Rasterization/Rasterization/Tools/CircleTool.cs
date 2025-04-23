@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Rasterization.Tools
@@ -17,6 +18,9 @@ namespace Rasterization.Tools
         private bool moving = false;
         private Point? dragOffset = null;
         public bool IsDragging => dragging || moving;
+
+        public List<CustomCircle> Circles => circles;
+        public bool UseAntialiasing = false;
 
         public CircleTool(Canvas canvas, List<CustomCircle> circles)
         {
@@ -35,7 +39,8 @@ namespace Rasterization.Tools
                 var circle = new CustomCircle
                 {
                     Start = centerPoint.Value,
-                    Thickness = 1
+                    Thickness = 1,
+                    UseAntialiasing = UseAntialiasing
                 };
                 circle.SetRadiusFromPoint(click);
                 circle.DrawCircle(canvas);
@@ -131,6 +136,19 @@ namespace Rasterization.Tools
             dragOffset = null;
             moving = false;
             dragging = false;
+        }
+
+        public void TryChangeColor(Point click, Color color)
+        {
+            foreach (var circle in circles)
+            {
+                if (circle.IsNearCircle(click))
+                {
+                    circle.myColor = color;
+                    circle.RedrawCircle(canvas);
+                    return;
+                }
+            }
         }
     }
 }

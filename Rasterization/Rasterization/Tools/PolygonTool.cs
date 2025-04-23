@@ -1,5 +1,4 @@
-﻿// PolygonTool.cs
-using Rasterization.Drawing;
+﻿using Rasterization.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -29,6 +28,9 @@ namespace Rasterization.Tools
         public bool IsMovingVertex => movingVertex;
         public bool IsMovingEdge => movingEdge;
 
+        public List<CustomPolygon> Polygons => polygons;
+        public bool UseAntialiasing = false;
+
         public PolygonTool(Canvas canvas, List<CustomPolygon> polygons)
         {
             this.canvas = canvas;
@@ -39,7 +41,9 @@ namespace Rasterization.Tools
         {
             if (currentPolygon == null)
             {
-                currentPolygon = new CustomPolygon();
+                currentPolygon = new CustomPolygon { 
+                    UseAntialiasing = UseAntialiasing
+                };
                 currentPolygon.Vertices.Add(click);
                 currentPolygon.numVertices = 1;
                 startPoint = click;
@@ -47,6 +51,7 @@ namespace Rasterization.Tools
             }
             else
             {
+                currentPolygon.UseAntialiasing = UseAntialiasing;
                 if (IsNearPoint(startPoint.Value, click))
                 {
                     currentPolygon.DrawPolygon(canvas);
@@ -219,7 +224,6 @@ namespace Rasterization.Tools
             }
         }
 
-
         private bool IsNearEdge(Point a, Point b, Point p, double threshold = 10)
         {
             Vector ab = b - a;
@@ -270,6 +274,19 @@ namespace Rasterization.Tools
             movingVertex = false;
             selectedVertexIndex = null;
             selectedEdgeIndices = null;
+        }
+
+        public void TryChangeColor(Point click, Color color)
+        {
+            foreach (var polygon in polygons)
+            {
+                if (polygon.IsNearPolygon(click))
+                {
+                    polygon.myColor = color;
+                    polygon.RedrawPolygon(canvas);
+                    return;
+                }
+            }
         }
 
     }

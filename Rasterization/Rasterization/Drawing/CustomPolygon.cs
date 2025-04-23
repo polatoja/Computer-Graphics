@@ -8,6 +8,9 @@ using System.Windows.Media;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using Rasterization.Tools;
+using System.Collections;
+
 namespace Rasterization.Drawing
 {
     public class CustomPolygon
@@ -15,6 +18,8 @@ namespace Rasterization.Drawing
         public List<Point> Vertices { get; set; } = new();
         public int numVertices { get; set; } = 1;
         public int Thickness { get; set; } = 1;
+        public Color myColor { get; set; } = Colors.Black;
+        public bool UseAntialiasing { get; set; } = false;
         public List<Rectangle> Pixels { get; set; } = new();
 
         public void DrawPolygon(Canvas canvas)
@@ -24,13 +29,36 @@ namespace Rasterization.Drawing
             for (int i = 0; i < numVertices; i++)
             {
                 if (i + 1 < numVertices)
-                    DrawLine(canvas, Vertices[i], Vertices[i + 1]);
+                {
+                    if (UseAntialiasing)
+                    {
+                        AntiAliasing.DrawWuLine(canvas, Vertices[i], Vertices[i + 1], myColor, Pixels);
+                        MessageBox.Show("Added XU WU " + canvas.Children.Count + " " + Pixels.Count);
+                    }
+                    else
+                    {
+                        DrawLineAliasing(canvas, Vertices[i], Vertices[i + 1]);
+                        MessageBox.Show("NOT " + canvas.Children.Count + " " + Pixels.Count);
+                    }
+                }
                 else
-                    DrawLine(canvas, Vertices[0], Vertices[i]);
+                {
+                    if (UseAntialiasing)
+                    {
+                        AntiAliasing.DrawWuLine(canvas, Vertices[0], Vertices[i], myColor, Pixels);
+                        MessageBox.Show("Added XU WU " + canvas.Children.Count + " " + Pixels.Count);
+                    }
+                    else
+                    {
+                        DrawLineAliasing(canvas, Vertices[0], Vertices[i]);
+                        MessageBox.Show("NOT " + canvas.Children.Count + " " + Pixels.Count);
+                    }
+                }
             }
         }
-        public void DrawLine(Canvas canvas, Point Start, Point End)
+        public void DrawLineAliasing(Canvas canvas, Point Start, Point End)
         {
+
             int x0 = (int)Start.X;
             int y0 = (int)Start.Y;
             int x1 = (int)End.X;
@@ -100,20 +128,25 @@ namespace Rasterization.Drawing
 
         private void DrawPixel(Canvas canvas, int x, int y)
         {
-            int half = Thickness / 2;
+            bool[,] brush = BrushUtils.CreateCircularBrush(Thickness);
+            int size = brush.GetLength(0);
+            int center = size / 2;
 
-            for (int dx = -half; dx <= half; dx++)
+            for (int dy = 0; dy < size; dy++)
             {
-                for (int dy = -half; dy <= half; dy++)
+                for (int dx = 0; dx < size; dx++)
                 {
+                    if (!brush[dx, dy]) continue;
+
                     Rectangle rect = new Rectangle
                     {
                         Width = 1,
                         Height = 1,
-                        Fill = Brushes.Black
+                        Fill = new SolidColorBrush(myColor)
                     };
-                    Canvas.SetLeft(rect, x + dx);
-                    Canvas.SetTop(rect, y + dy);
+
+                    Canvas.SetLeft(rect, x + dx - center);
+                    Canvas.SetTop(rect, y + dy - center);
                     canvas.Children.Add(rect);
                     Pixels.Add(rect);
                 }
@@ -122,6 +155,7 @@ namespace Rasterization.Drawing
         public void RedrawPolygon(Canvas canvas)
         {
             RemovePolygon(canvas);
+            MessageBox.Show("Removed" + canvas.Children.Count);
             DrawPolygon(canvas);
         }
 

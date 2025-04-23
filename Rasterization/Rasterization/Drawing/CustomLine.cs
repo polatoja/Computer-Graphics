@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using Rasterization.Tools;
 
 namespace Rasterization.Drawing
 {
@@ -16,9 +17,19 @@ namespace Rasterization.Drawing
         public Point Start { get; set; }
         public Point End { get; set; }
         public int Thickness { get; set; } = 1;
+        public Color myColor { get; set; } = Colors.Black;
+        public bool UseAntialiasing { get; set; } = false;
         public List<Rectangle> Pixels { get; set; } = new();
 
         public void DrawLine(Canvas canvas)
+        {
+            if (UseAntialiasing)
+                AntiAliasing.DrawWuLine(canvas, Start, End, myColor, Pixels);
+            else
+                DrawLineAliasing(canvas);
+        }
+
+        public void DrawLineAliasing(Canvas canvas)
         {
             Pixels.Clear();
 
@@ -89,7 +100,6 @@ namespace Rasterization.Drawing
             }
         }
 
-
         public void RedrawLine(Canvas canvas)
         {
             RemoveLine(canvas);
@@ -103,23 +113,27 @@ namespace Rasterization.Drawing
             Pixels.Clear();
         }
 
-
         private void DrawPixel(Canvas canvas, int x, int y)
         {
-            int half = Thickness / 2;
+            bool[,] brush = BrushUtils.CreateCircularBrush(Thickness);
+            int size = brush.GetLength(0);
+            int center = size / 2;
 
-            for (int dx = -half; dx <= half; dx++)
+            for (int dy = 0; dy < size; dy++)
             {
-                for (int dy = -half; dy <= half; dy++)
+                for (int dx = 0; dx < size; dx++)
                 {
+                    if (!brush[dx, dy]) continue;
+
                     Rectangle rect = new Rectangle
                     {
                         Width = 1,
                         Height = 1,
-                        Fill = Brushes.Black
+                        Fill = new SolidColorBrush(myColor)
                     };
-                    Canvas.SetLeft(rect, x + dx);
-                    Canvas.SetTop(rect, y + dy);
+
+                    Canvas.SetLeft(rect, x + dx - center);
+                    Canvas.SetTop(rect, y + dy - center);
                     canvas.Children.Add(rect);
                     Pixels.Add(rect);
                 }
