@@ -3,15 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\rasterization\\rasterization\\tools\\rectangletool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|solutionrelative:rasterization\\tools\\rectangletool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\rasterization\\rasterization\\drawing\\customrectangle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|solutionrelative:rasterization\\drawing\\customrectangle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\rasterization\\rasterization\\drawing\\customcircle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|solutionrelative:rasterization\\drawing\\customcircle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\rasterization\\rasterization\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|solutionrelative:rasterization\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\majat\\AppData\\Local\\Temp\\53c920c7-ec43-4cb2-a095-068e4329a1ce_Computer Graphics.7z.1ce\\Task3Window.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\rasterization\\rasterization\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|solutionrelative:rasterization\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\rasterization\\rasterization\\tools\\polygontool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B0E05544-9A22-4FC8-987E-E8EB671DDA6F}|Rasterization\\Rasterization.csproj|solutionrelative:rasterization\\tools\\polygontool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -21,11 +34,50 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
+              "Title": "PolygonTool.cs",
+              "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\Tools\\PolygonTool.cs",
+              "RelativeDocumentMoniker": "Rasterization\\Tools\\PolygonTool.cs",
+              "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\Tools\\PolygonTool.cs",
+              "RelativeToolTip": "Rasterization\\Tools\\PolygonTool.cs",
+              "ViewState": "AgIAAMsAAAAAAAAAAAAcwBEBAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T13:34:35.113Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RectangleTool.cs",
+              "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\Tools\\RectangleTool.cs",
+              "RelativeDocumentMoniker": "Rasterization\\Tools\\RectangleTool.cs",
+              "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\Tools\\RectangleTool.cs",
+              "RelativeToolTip": "Rasterization\\Tools\\RectangleTool.cs",
+              "ViewState": "AgIAAIUAAAAAAAAAAAAAwI0AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T10:19:19.965Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CustomRectangle.cs",
+              "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\Drawing\\CustomRectangle.cs",
+              "RelativeDocumentMoniker": "Rasterization\\Drawing\\CustomRectangle.cs",
+              "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\Drawing\\CustomRectangle.cs",
+              "RelativeToolTip": "Rasterization\\Drawing\\CustomRectangle.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAAwBsAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T10:12:04.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\MainWindow.xaml",
               "RelativeDocumentMoniker": "Rasterization\\MainWindow.xaml",
@@ -37,28 +89,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Task3Window.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\majat\\AppData\\Local\\Temp\\53c920c7-ec43-4cb2-a095-068e4329a1ce_Computer Graphics.7z.1ce\\Task3Window.xaml.cs",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\AppData\\Local\\Temp\\53c920c7-ec43-4cb2-a095-068e4329a1ce_Computer Graphics.7z.1ce\\Task3Window.xaml.cs",
-              "ToolTip": "C:\\Users\\majat\\AppData\\Local\\Temp\\53c920c7-ec43-4cb2-a095-068e4329a1ce_Computer Graphics.7z.1ce\\Task3Window.xaml.cs [Read Only]",
-              "RelativeToolTip": "..\\..\\..\\..\\AppData\\Local\\Temp\\53c920c7-ec43-4cb2-a095-068e4329a1ce_Computer Graphics.7z.1ce\\Task3Window.xaml.cs [Read Only]",
-              "ViewState": "AgIAAAwBAAAAAAAAAAAewDcBAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-11T09:00:14.634Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "Rasterization\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\MainWindow.xaml.cs",
               "RelativeToolTip": "Rasterization\\MainWindow.xaml.cs",
-              "ViewState": "AgIAANQBAAAAAAAAAAAuwBICAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAwwEQAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-23T19:41:04.365Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CustomCircle.cs",
+              "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\Drawing\\CustomCircle.cs",
+              "RelativeDocumentMoniker": "Rasterization\\Drawing\\CustomCircle.cs",
+              "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Rasterization\\Rasterization\\Drawing\\CustomCircle.cs",
+              "RelativeToolTip": "Rasterization\\Drawing\\CustomCircle.cs",
+              "ViewState": "AgIAAGcAAAAAAAAAAAAcwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-11T13:07:07.728Z",
               "EditorCaption": ""
             }
           ]

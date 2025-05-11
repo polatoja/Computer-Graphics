@@ -52,11 +52,21 @@ namespace Rasterization
 
         private bool isDrawingPacMan = false;
 
+        // RECTANGLE
+        private List<CustomRectangle> rectangles = new();
+        private RectangleTool rectangleTool;
+
+        private bool isDrawingRectangle = false;
+        private bool isEditingVertexRectangle = false;
+        private bool isEditingEdgeRectangle = false;
+        private bool isMovingRectangle = false;
+
         private class Shapes
         {
             public List<CustomLine> Lines { get; set; } = new();
             public List<CustomCircle> Circles { get; set; } = new();
             public List<CustomPolygon> Polygons { get; set; } = new();
+            public List<CustomRectangle> Rectangles { get; set; } = new();
         }
         public MainWindow()
         {
@@ -65,6 +75,7 @@ namespace Rasterization
             circleTool = new CircleTool(DrawingCanvas, circles);
             polygonTool = new PolygonTool(DrawingCanvas, polygons);
             pacmanTool = new PacManTool(DrawingCanvas, pacmans);
+            rectangleTool = new RectangleTool(DrawingCanvas, rectangles);
 
             DrawingCanvas.MouseLeftButtonDown += Canvas_MouseLeftButtonDown;
             DrawingCanvas.MouseRightButtonDown += Canvas_MouseRightButtonDown;
@@ -88,6 +99,11 @@ namespace Rasterization
             isMovingPolygonVertex = false;
             isMovingPolygonEdge = false;
             isMovingPolygon = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void EditLine_Click(object sender, RoutedEventArgs e)
@@ -107,6 +123,11 @@ namespace Rasterization
             isMovingPolygonVertex = false;
             isMovingPolygonEdge = false;
             isMovingPolygon = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void ThickenLine_Click(object sender, RoutedEventArgs e)
@@ -126,6 +147,11 @@ namespace Rasterization
             isMovingPolygonVertex = false;
             isMovingPolygonEdge = false;
             isMovingPolygon = false;
+         
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void DeleteLine_Click(object sender, RoutedEventArgs e)
@@ -145,6 +171,10 @@ namespace Rasterization
             isMovingPolygonVertex = false;
             isMovingPolygonEdge = false;
             isMovingPolygon = false;
+                
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void DrawCircle_Click(object sender, RoutedEventArgs e)
@@ -164,6 +194,11 @@ namespace Rasterization
             isMovingPolygonVertex = false;
             isMovingPolygonEdge = false;
             isMovingPolygon = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void EditCircle_Click(object sender, RoutedEventArgs e)
@@ -183,6 +218,11 @@ namespace Rasterization
             isMovingPolygonVertex = false;
             isMovingPolygonEdge = false;
             isMovingPolygon = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void MoveCircle_Click(object sender, RoutedEventArgs e)
@@ -202,6 +242,11 @@ namespace Rasterization
             isMovingPolygonVertex = false;
             isMovingPolygonEdge = false;
             isMovingPolygon = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void ThickenCircle_Click(object sender, RoutedEventArgs e)
@@ -221,6 +266,11 @@ namespace Rasterization
             isMovingPolygonVertex = false;
             isMovingPolygonEdge = false;
             isMovingPolygon = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void DeleteCircle_Click(object sender, RoutedEventArgs e)
@@ -240,6 +290,11 @@ namespace Rasterization
             isMovingPolygonVertex = false;
             isMovingPolygonEdge = false;
             isMovingPolygon = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void DrawPolygon_Click(object sender, RoutedEventArgs e)
@@ -259,6 +314,11 @@ namespace Rasterization
             isDrawingCircle = false;
             isEditingCircle = false;
             isMovingCircle = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void MovePolygonVertex_Click(object sender, RoutedEventArgs e)
@@ -278,6 +338,11 @@ namespace Rasterization
             isDrawingCircle = false;
             isEditingCircle = false;
             isMovingCircle = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void MovePolygonEdge_Click(object sender, RoutedEventArgs e)
@@ -297,6 +362,11 @@ namespace Rasterization
             isDrawingCircle = false;
             isEditingCircle = false;
             isMovingCircle = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void MovePolygon_Click(object sender, RoutedEventArgs e)
@@ -316,6 +386,11 @@ namespace Rasterization
             isDrawingCircle = false;
             isEditingCircle = false;
             isMovingCircle = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void ClearCanvas_Click(object sender, RoutedEventArgs e)
@@ -323,6 +398,7 @@ namespace Rasterization
             lineTool.ClearCanvas();
             circleTool.ClearCanvas();
             polygonTool.ClearCanvas();
+            rectangleTool.ClearCanvas();
         }
 
         private void ThickenShape_Click(object sender, RoutedEventArgs e)
@@ -341,6 +417,11 @@ namespace Rasterization
             isDrawingCircle = false;
             isEditingCircle = false;
             isMovingCircle = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void DeleteShape_Click(object sender, RoutedEventArgs e)
@@ -359,6 +440,11 @@ namespace Rasterization
             isDrawingCircle = false;
             isEditingCircle = false;
             isMovingCircle = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
         }
 
         private void ChangeColors_Click(object sender, RoutedEventArgs e)
@@ -378,6 +464,11 @@ namespace Rasterization
             isEditingCircle = false;
             isMovingCircle = false;
 
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
+            
             ColorPopup.IsOpen = true;
         }
 
@@ -396,6 +487,7 @@ namespace Rasterization
             lineTool.UseAntialiasing = true;
             circleTool.UseAntialiasing = true;
             polygonTool.UseAntialiasing = true;
+            rectangleTool.UseAntialiasing = true;
 
             foreach (var line in lineTool.Lines)
             {
@@ -412,10 +504,15 @@ namespace Rasterization
                 polygon.UseAntialiasing = true;
                 polygon.RedrawPolygon(DrawingCanvas);
             }
+            foreach (var rectangle in rectangleTool.Rectangles)
+            {
+                rectangle.UseAntialiasing = true;
+                rectangle.RedrawRectangle(DrawingCanvas);
+            }
         }
         private void AntiAlisaing_Unchecked(object sender, RoutedEventArgs e)
         {
-            if(!lineTool.UseAntialiasing || !circleTool.UseAntialiasing || !polygonTool.UseAntialiasing)
+            if(!lineTool.UseAntialiasing || !circleTool.UseAntialiasing || !polygonTool.UseAntialiasing || !rectangleTool.UseAntialiasing)
                 return;
             else
             {
@@ -438,6 +535,11 @@ namespace Rasterization
                     polygon.UseAntialiasing = false;
                     polygon.RedrawPolygon(DrawingCanvas);
                 }
+                foreach (var rectangle in rectangleTool.Rectangles)
+                {
+                    rectangle.UseAntialiasing = false;
+                    rectangle.RedrawRectangle(DrawingCanvas);
+                }
             }
         }
 
@@ -455,7 +557,8 @@ namespace Rasterization
                 {
                     Lines = lines,
                     Circles = circles,
-                    Polygons = polygons
+                    Polygons = polygons,
+                    Rectangles = rectangles,
                 };
 
                 var options = new JsonSerializerOptions
@@ -493,10 +596,12 @@ namespace Rasterization
                     lines.Clear();
                     circles.Clear();
                     polygons.Clear();
+                    rectangles.Clear();
 
                     lineTool.Lines.Clear();
                     circleTool.Circles.Clear();
                     polygonTool.Polygons.Clear();
+                    rectangleTool.Rectangles.Clear();
 
                     if (data.Lines != null)
                     {
@@ -521,6 +626,14 @@ namespace Rasterization
                         foreach (var polygon in polygonTool.Polygons)
                             polygon.RedrawPolygon(DrawingCanvas);
                     }
+
+                    if (data.Rectangles != null)
+                    {
+                        rectangles.AddRange(data.Rectangles);
+                        rectangleTool.Rectangles.AddRange(data.Rectangles);
+                        foreach (var rectangle in rectangleTool.Rectangles)
+                            rectangle.RedrawRectangle(DrawingCanvas);
+                    }
                 }
             }
         }
@@ -544,9 +657,117 @@ namespace Rasterization
             isMovingPolygon = false;
 
             isDrawingPacMan = true;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
+        }
+
+        private void DrawRectangle_Click(object sender, RoutedEventArgs e)
+        {
+            isThickening = false;
+            isDeleting = false;
+            isChangingColors = false;
+
+            isDrawingLine = false;
+            isEditingLine = false;
+
+            isDrawingCircle = false;
+            isEditingCircle = false;
+            isMovingCircle = false;
+
+            isDrawingPolygon = false;
+            isMovingPolygonVertex = false;
+            isMovingPolygonEdge = false;
+            isMovingPolygon = false;
+
+            isDrawingPacMan = false;
+
+            isDrawingRectangle = true;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
+        }
+
+        private void EditVertexRectangle_Click(object sender, RoutedEventArgs e)
+        {
+            isThickening = false;
+            isDeleting = false;
+            isChangingColors = false;
+
+            isDrawingLine = false;
+            isEditingLine = false;
+
+            isDrawingCircle = false;
+            isEditingCircle = false;
+            isMovingCircle = false;
+
+            isDrawingPolygon = false;
+            isMovingPolygonVertex = false;
+            isMovingPolygonEdge = false;
+            isMovingPolygon = false;
+
+            isDrawingPacMan = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = true;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
+        }
+
+        private void EditEdgeRectangle_Click(object sender, RoutedEventArgs e)
+        {
+            isThickening = false;
+            isDeleting = false;
+            isChangingColors = false;
+
+            isDrawingLine = false;
+            isEditingLine = false;
+
+            isDrawingCircle = false;
+            isEditingCircle = false;
+            isMovingCircle = false;
+
+            isDrawingPolygon = false;
+            isMovingPolygonVertex = false;
+            isMovingPolygonEdge = false;
+            isMovingPolygon = false;
+
+            isDrawingPacMan = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = true;
+            isMovingRectangle = false;
         }
 
 
+        private void MoveRectangle_Click(object sender, RoutedEventArgs e)
+        {
+            isThickening = false;
+            isDeleting = false;
+            isChangingColors = false;
+
+            isDrawingLine = false;
+            isEditingLine = false;
+
+            isDrawingCircle = false;
+            isEditingCircle = false;
+            isMovingCircle = false;
+
+            isDrawingPolygon = false;
+            isMovingPolygonVertex = false;
+            isMovingPolygonEdge = false;
+            isMovingPolygon = false;
+
+            isDrawingPacMan = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = true;
+        }
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point click = e.GetPosition(DrawingCanvas);
@@ -559,6 +780,8 @@ namespace Rasterization
                 polygonTool.StartDraw(click);
             else if (isDrawingPacMan)
                 pacmanTool.StartDraw(click);
+            else if (isDrawingRectangle)
+                rectangleTool.StartDraw(click);
 
             else if (isEditingLine)
             {
@@ -573,6 +796,20 @@ namespace Rasterization
                     circleTool.FinishEdit();
                 else
                     circleTool.TryEdit(click);
+            }
+            else if (isEditingVertexRectangle)
+            {
+                if (rectangleTool.IsDragging)
+                    rectangleTool.FinishEdit();
+                else
+                    rectangleTool.TryEditVertex(click);
+            }
+            else if (isEditingEdgeRectangle)
+            {
+                if (rectangleTool.IsDragging)
+                    rectangleTool.FinishEdit();
+                else
+                    rectangleTool.TryEditEdge(click);
             }
             else if (isMovingPolygonVertex)
             {
@@ -603,6 +840,13 @@ namespace Rasterization
                 else
                     polygonTool.TryMove(click);
             }
+            else if(isMovingRectangle)
+            {
+                if (rectangleTool.IsDragging)
+                    rectangleTool.FinishEdit();
+                else
+                    rectangleTool.TryMove(click);
+            }
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
@@ -617,6 +861,8 @@ namespace Rasterization
                 polygonTool.MoveVertex(e.GetPosition(DrawingCanvas));
             else if (isMovingPolygonEdge)
                 polygonTool.MoveEdge(e.GetPosition(DrawingCanvas));
+            else if (isEditingVertexRectangle || isEditingEdgeRectangle || isMovingRectangle)
+                rectangleTool.UpdateDrag(e.GetPosition(DrawingCanvas));
         }
 
         private void Canvas_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -628,19 +874,23 @@ namespace Rasterization
                 lineTool.TryDelete(click);
                 circleTool.TryDelete(click);
                 polygonTool.TryDelete(click);
+                rectangleTool.TryDelete(click);
             }
             else if (isThickening)
             {
                 lineTool.TryIncreaseThickness(click);
                 circleTool.TryIncreaseThickness(click);
                 polygonTool.TryIncreaseThickness(click);
+                rectangleTool.TryIncreaseThickness(click);
             }
             else if (isChangingColors)
             {
                 lineTool.TryChangeColor(click, selectedColor);
                 circleTool.TryChangeColor(click, selectedColor);
                 polygonTool.TryChangeColor(click, selectedColor);
+                rectangleTool.TryChangeColor(click, selectedColor);
             }
         }
+
     }
 }

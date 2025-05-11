@@ -38,6 +38,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="6*" />
             <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" BorderBrush="Black" BorderThickness="2" Margin="5">
@@ -55,7 +56,7 @@
         </Popup>
 
         <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
-            <StackPanel VerticalAlignment="Center" Margin="15">
+            <StackPanel VerticalAlignment="Center" Margin="10">
                 <Button x:Name="ClearCanvas" Content="Clear" Click="ClearCanvas_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="ThickenShape" Content="Thicken Shape" Click="ThickenShape_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="DeleteShape" Content="Delete Shape" Click="DeleteShape_Click" Style="{StaticResource RoundedButtonStyle}"/>
@@ -65,20 +66,20 @@
                 <Button x:Name="LoadShape" Content="Load Canva" Click="LoadCanva_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
-            <StackPanel VerticalAlignment="Center" Margin="15">
+            <StackPanel VerticalAlignment="Center" Margin="10">
                 <TextBlock Text="Line" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button x:Name="DrawLine" Content="Draw Line" Click="DrawLine_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="EditLine" Content="Edit Line" Click="EditLine_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
-            <StackPanel VerticalAlignment="Center" Margin="15">
+            <StackPanel VerticalAlignment="Center" Margin="10">
                 <TextBlock Text="Circle" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button x:Name="DrawCircle" Content="Draw Circle" Click="DrawCircle_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="EditCircle" Content="Edit Circle" Click="EditCircle_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="MoveCircle" Content="Move Circle" Click="MoveCircle_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
-            <StackPanel VerticalAlignment="Center" Margin="15">
+            <StackPanel VerticalAlignment="Center" Margin="10">
                 <TextBlock Text="Polygons" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button x:Name="DrawPolygons" Content="Draw Polygon" Click="DrawPolygon_Click" Style="{StaticResource RoundedButtonStyle}"/>
                 <Button x:Name="MovePolygonVertex" Content="Move Vertex" Click="MovePolygonVertex_Click" Style="{StaticResource RoundedButtonStyle}"/>
@@ -86,10 +87,21 @@
                 <Button x:Name="MovePolygon" Content="Move Polygon" Click="MovePolygon_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
-            <StackPanel VerticalAlignment="Center" Margin="15">
+            <StackPanel VerticalAlignment="Center" Margin="10">
                 <TextBlock Text="PacMan Shape" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Button x:Name="DrawPacMan" Content="Draw Pac-Man" Click="DrawPacMan_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center">
+            <StackPanel VerticalAlignment="Center" Margin="10">
+                <TextBlock Text="Rectangle" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Button x:Name="DrawRectangle" Content="Draw Rectangle" Click="DrawRectangle_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="EditVertexRectangle" Content="Edit Vertex" Click="EditVertexRectangle_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="EditEdgeRectangle" Content="Edit Edge" Click="EditEdgeRectangle_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="MoveRectangle" Content="Move Rectangle" Click="MoveRectangle_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            </StackPanel>
+            
         </StackPanel>
 
     </Grid>
