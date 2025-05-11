@@ -10,8 +10,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
-using System.Text.Json.Serialization;
-using Newtonsoft.Json;
 
 
 namespace Rasterization
@@ -448,7 +446,7 @@ namespace Rasterization
             var saveDialog = new SaveFileDialog
             {
                 Filter = "JSON Files (*.json)|*.json",
-                FileName = "shapes"
+                FileName = "canvas.json"
             };
 
             if (saveDialog.ShowDialog() == true)
@@ -460,18 +458,16 @@ namespace Rasterization
                     Polygons = polygons
                 };
 
-                Newtonsoft.Json.JsonSerializer serializer = new()
+                var options = new JsonSerializerOptions
                 {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    MaxDepth = 1,
-                    NullValueHandling = NullValueHandling.Ignore
+                    WriteIndented = true,
+                    IncludeFields = true
                 };
-                using StreamWriter sw = new(saveDialog.FileName);
-                using JsonWriter writer = new JsonTextWriter(sw);
-                serializer.Serialize(writer, canvasData);
+
+                string json = JsonSerializer.Serialize(canvasData, options);
+                File.WriteAllText(saveDialog.FileName, json);
             }
         }
-
 
         private void LoadCanva_Click(object sender, RoutedEventArgs e)
         {
@@ -482,52 +478,52 @@ namespace Rasterization
 
             if (openDialog.ShowDialog() == true)
             {
-                string json = File.ReadAllText(openDialog.FileName);
-
-                var loadedShapes = System.Text.Json.JsonSerializer.Deserialize<Shapes>(json);
-
-                if (loadedShapes != null)
+                var options = new JsonSerializerOptions
                 {
-                    // Clear canvas and tools
+                    IncludeFields = true
+                };
+
+                string json = File.ReadAllText(openDialog.FileName);
+                var data = JsonSerializer.Deserialize<Shapes>(json, options);
+
+                if (data != null)
+                {
                     DrawingCanvas.Children.Clear();
 
                     lines.Clear();
                     circles.Clear();
                     polygons.Clear();
 
-                    // Refill lines
-                    if (loadedShapes.Lines != null)
+                    lineTool.Lines.Clear();
+                    circleTool.Circles.Clear();
+                    polygonTool.Polygons.Clear();
+
+                    if (data.Lines != null)
                     {
-                        lines.AddRange(loadedShapes.Lines);
-                        lineTool.Lines.Clear();
-                        lineTool.Lines.AddRange(lines);
+                        lines.AddRange(data.Lines);
+                        lineTool.Lines.AddRange(data.Lines);
                         foreach (var line in lineTool.Lines)
-                            line.RedrawLine(DrawingCanvas); // Use tool's draw method
+                            line.RedrawLine(DrawingCanvas);
                     }
 
-                    // Refill circles
-                    if (loadedShapes.Circles != null)
+                    if (data.Circles != null)
                     {
-                        circles.AddRange(loadedShapes.Circles);
-                        circleTool.Circles.Clear();
-                        circleTool.Circles.AddRange(circles);
+                        circles.AddRange(data.Circles);
+                        circleTool.Circles.AddRange(data.Circles);
                         foreach (var circle in circleTool.Circles)
-                            circle.RedrawCircle(DrawingCanvas); // Use tool's draw method
+                            circle.RedrawCircle(DrawingCanvas);
                     }
 
-                    // Refill polygons
-                    if (loadedShapes.Polygons != null)
+                    if (data.Polygons != null)
                     {
-                        polygons.AddRange(loadedShapes.Polygons);
-                        polygonTool.Polygons.Clear();
-                        polygonTool.Polygons.AddRange(polygons);
+                        polygons.AddRange(data.Polygons);
+                        polygonTool.Polygons.AddRange(data.Polygons);
                         foreach (var polygon in polygonTool.Polygons)
-                            polygon.RedrawPolygon(DrawingCanvas); // Use tool's draw method
+                            polygon.RedrawPolygon(DrawingCanvas);
                     }
                 }
             }
         }
-
 
         private void DrawPacMan_Click(object sender, RoutedEventArgs e)
         {
