@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.IO;
 using Task.shapes;
 
 namespace Task
@@ -55,8 +56,20 @@ namespace Task
         private Polygon? currentPolygon = null;
         private Rectangle? currentRectangle = null;
 
+        public class CanvasData
+        {
+            public List<Line>? Lines { get; set; }
+            public List<Circle>? Circles { get; set; }
+            public List<Polygon>? Polygons { get; set; }
+            public List<Rectangle>? Rectangles { get; set; }
+        }
+
+
         private bool useAntiAliasing = false;
-        private Color selectedColor = Colors.Black;
+        private Color selectedLineColor = Colors.Black;
+        private Color? selectedFillColor = null;
+        private BitmapImage? selectedFillImage { get; set; }
+
         private EditorMode currentMode = EditorMode.None;
 
         private List<Point> pointMarkers = new();
@@ -77,19 +90,18 @@ namespace Task
         private void ChangeColors_Click(object sender, RoutedEventArgs e)
         {
             currentMode = EditorMode.ChangeColor;
-            ColorPopup.IsOpen = true;
+            LineColorPopup.IsOpen = true;
         }
-        private void ApplyPopupColor_Click(object sender, RoutedEventArgs e)
+        private void ApplyLinePopupColor_Click(object sender, RoutedEventArgs e)
         {
-            if (PopupColorPicker.SelectedColor.HasValue)
+            if (LinePopupColorPicker.SelectedColor.HasValue)
             {
-                selectedColor = PopupColorPicker.SelectedColor.Value;
+                selectedLineColor = LinePopupColorPicker.SelectedColor.Value;
             }
 
-            ColorPopup.IsOpen = false;
+            LineColorPopup.IsOpen = false;
         }
         private void DeleteShape_Click(object sender, RoutedEventArgs e) => currentMode = EditorMode.Delete;
-
 
         private void DrawLine_Click(object sender, RoutedEventArgs e) => currentMode = EditorMode.DrawLine;
         private void EditLine_Click(object sender, RoutedEventArgs e) => currentMode = EditorMode.EditLine;
@@ -105,16 +117,256 @@ namespace Task
         private void MoveRectangleVertex_Click(object sender, RoutedEventArgs e) => currentMode = EditorMode.MoveRectangleVertex;
         private void MoveRectangleEdge_Click(object sender, RoutedEventArgs e) => currentMode = EditorMode.MoveRectangleEdge;
         private void MoveRectangle_Click(object sender, RoutedEventArgs e) => currentMode = EditorMode.MoveRectangle;
+        private void FillColor_Click(object sender, RoutedEventArgs e)
+        {
+            currentMode = EditorMode.FillColor;
+            FillColorPopup.IsOpen = true;
+        }
+        private void ApplyFillPopupColor_Click(object sender, RoutedEventArgs e)
+        {
+            if (FillPopupColorPicker.SelectedColor.HasValue)
+            {
+                selectedFillColor = FillPopupColorPicker.SelectedColor.Value;
+            }
+
+            FillColorPopup.IsOpen = false;
+        }
+
+        private void FillImage_Click(object sender, RoutedEventArgs e)
+        {
+            currentMode = EditorMode.FillImage;
+
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Image files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                try
+                {
+                    var imageUri = new Uri(dialog.FileName, UriKind.Absolute);
+                    var image = new BitmapImage();
+                    image.BeginInit();
+                    image.UriSource = imageUri;
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.EndInit();
+
+                    selectedFillImage = image;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to load image: " + ex.Message);
+                }
+            }
+        }
+
 
         private void SaveCanva_Click(object sender, RoutedEventArgs e)
         {
+            var dialog = new SaveFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json",
+                FileName = "canvas.json"
+            };
 
+            if (dialog.ShowDialog() == true)
+            {
+                var data = new CanvasData
+                {
+                    Lines = shapes.OfType<Line>().ToList(),
+                    Circles = shapes.OfType<Circle>().ToList(),
+                    Polygons = shapes.OfType<Polygon>().ToList(),
+                    Rectangles = shapes.OfType<Rectangle>().ToList()
+                };
+
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                    IncludeFields = true
+                };
+
+                File.WriteAllText(dialog.FileName, JsonSerializer.Serialize(data, options));
+            }
         }
 
         private void LoadCanva_Click(object sender, RoutedEventArgs e)
         {
+            var dialog = new OpenFileDialog
+            {
+                Filter = "JSON files (*.json)|*.json"
+            };
 
+            if (dialog.ShowDialog() == true)
+            {
+                var options = new JsonSerializerOptions
+                {
+                    IncludeFields = true
+                };
+
+                string json = File.ReadAllText(dialog.FileName);
+                var data = JsonSerializer.Deserialize<CanvasData>(json, options);
+
+                if (data != null)
+                {
+                    shapes.Clear();
+                    currentLine = null;
+                    currentCircle = null;
+                    currentPolygon = null;
+                    currentRectangle = null;
+
+                    if (data.Lines != null) shapes.AddRange(data.Lines);
+                    if (data.Circles != null) shapes.AddRange(data.Circles);
+                    if (data.Polygons != null) shapes.AddRange(data.Polygons);
+                    if (data.Rectangles != null) shapes.AddRange(data.Rectangles);
+
+                    ClearBitmap();
+                    foreach (var shape in shapes)
+                        shape.Draw(bitmap);
+                }
+            }
         }
+
+        private void SaveCanvaVector_Click(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog
+            {
+                Filter = "JSON Files (*.json)|*.json",
+                FileName = "canvas_vector.json"
+            };
+
+            if (saveDialog.ShowDialog() == true)
+            {
+                var vectorData = new
+                {
+                    Lines = shapes.OfType<Line>().Select(l => new
+                    {
+                        l.Start,
+                        l.End,
+                        l.Thickness,
+                        Color = l.Color.ToString(),
+                        l.UseAntialiasing
+                    }).ToList(),
+
+                    Circles = shapes.OfType<Circle>().Select(c => new
+                    {
+                        Start = c.Start,
+                        c.Radius,
+                        c.Thickness,
+                        Color = c.Color.ToString(),
+                        c.UseAntialiasing
+                    }).ToList(),
+
+                    Polygons = shapes.OfType<Polygon>().Select(p => new
+                    {
+                        Vertices = p.Vertices,
+                        p.Thickness,
+                        Color = p.Color.ToString(),
+                        p.UseAntialiasing,
+                        //FillColor = p.Color.ToString(),
+                        //FillImageUri = ""
+                    }).ToList(),
+
+                    Rectangles = shapes.OfType<Rectangle>().Select(r => new
+                    {
+                        Vertices = r.Vertices,
+                        r.Thickness,
+                        Color = r.Color.ToString(),
+                        r.UseAntialiasing
+                    }).ToList()
+                };
+
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
+
+                string json = JsonSerializer.Serialize(vectorData, options);
+                File.WriteAllText(saveDialog.FileName, json);
+            }
+        }
+        private void LoadCanvaVector_Click(object sender, RoutedEventArgs e)
+        {
+            var openDialog = new OpenFileDialog
+            {
+                Filter = "JSON Files (*.json)|*.json"
+            };
+
+            if (openDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    string json = File.ReadAllText(openDialog.FileName);
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    var document = JsonDocument.Parse(json);
+                    shapes.Clear();
+
+                    foreach (var element in document.RootElement.GetProperty("Lines").EnumerateArray())
+                    {
+                        var line = new Line
+                        {
+                            Start = element.GetProperty("Start").Deserialize<Point>(),
+                            End = element.GetProperty("End").Deserialize<Point>(),
+                            Thickness = element.GetProperty("Thickness").GetInt32(),
+                            UseAntialiasing = element.GetProperty("UseAntialiasing").GetBoolean(),
+                            Color = (Color)ColorConverter.ConvertFromString(element.GetProperty("Color").GetString())
+                        };
+                        shapes.Add(line);
+                    }
+
+                    foreach (var element in document.RootElement.GetProperty("Circles").EnumerateArray())
+                    {
+                        var circle = new Circle
+                        {
+                            Start = element.GetProperty("Start").Deserialize<Point>(),
+                            Radius = element.GetProperty("Radius").GetInt32(),
+                            Thickness = element.GetProperty("Thickness").GetInt32(),
+                            UseAntialiasing = element.GetProperty("UseAntialiasing").GetBoolean(),
+                            Color = (Color)ColorConverter.ConvertFromString(element.GetProperty("Color").GetString())
+                        };
+                        shapes.Add(circle);
+                    }
+
+                    foreach (var element in document.RootElement.GetProperty("Polygons").EnumerateArray())
+                    {
+                        var poly = new Polygon
+                        {
+                            Vertices = JsonSerializer.Deserialize<List<Point>>(element.GetProperty("Vertices").GetRawText()),
+                            Thickness = element.GetProperty("Thickness").GetInt32(),
+                            UseAntialiasing = element.GetProperty("UseAntialiasing").GetBoolean(),
+                            Color = (Color)ColorConverter.ConvertFromString(element.GetProperty("Color").GetString()),
+                            numVertices = JsonSerializer.Deserialize<List<Point>>(element.GetProperty("Vertices").GetRawText()).Count
+                        };
+                        shapes.Add(poly);
+                    }
+
+                    foreach (var element in document.RootElement.GetProperty("Rectangles").EnumerateArray())
+                    {
+                        var rect = new Rectangle
+                        {
+                            Vertices = JsonSerializer.Deserialize<List<Point>>(element.GetProperty("Points").GetRawText()),
+                            Thickness = element.GetProperty("Thickness").GetInt32(),
+                            UseAntialiasing = element.GetProperty("UseAntialiasing").GetBoolean(),
+                            Color = (Color)ColorConverter.ConvertFromString(element.GetProperty("Color").GetString())
+                        };
+                        shapes.Add(rect);
+                    }
+
+                    ClearBitmap();
+                    foreach (var shape in shapes)
+                        shape.Draw(bitmap);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
 
         private void ClearAndDeleteBitmap()
         {
@@ -221,7 +473,35 @@ namespace Task
                 {
                     if (shape.IsNearShape(click))
                     {
-                        shape.Color = selectedColor;
+                        shape.Color = selectedLineColor;
+                        break;
+                    }
+                }
+                ClearBitmap();
+                foreach (var shape in shapes)
+                    shape.Draw(bitmap);
+            }
+            else if (currentMode == EditorMode.FillColor)
+            {
+                foreach (var shape in shapes.ToList())
+                {
+                    if (shape.IsNearShape(click) && shape is Polygon poly)
+                    {
+                        poly.FillColor = selectedFillColor;
+                        break;
+                    }
+                }
+                ClearBitmap();
+                foreach (var shape in shapes)
+                    shape.Draw(bitmap);
+            }
+            else if (currentMode == EditorMode.FillImage)
+            {
+                foreach (var shape in shapes.ToList())
+                {
+                    if (shape.IsNearShape(click) && shape is Polygon poly)
+                    {
+                        poly.FillImage = selectedFillImage;
                         break;
                     }
                 }
@@ -759,7 +1039,5 @@ namespace Task
             }
 
         }
-
-        
     }
 }

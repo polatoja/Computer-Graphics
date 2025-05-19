@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\drawing\\task\\task\\shapes\\polygon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|solutionrelative:task\\shapes\\polygon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\drawing\\task\\task\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|solutionrelative:task\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\drawing\\task\\task\\shapes\\rectangle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|solutionrelative:task\\shapes\\rectangle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\drawing\\task\\task\\shapes\\polygon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|solutionrelative:task\\shapes\\polygon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\drawing\\task\\task\\shapes\\line.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,23 +30,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "Polygon.cs",
               "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\shapes\\Polygon.cs",
               "RelativeDocumentMoniker": "Task\\shapes\\Polygon.cs",
               "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\shapes\\Polygon.cs",
               "RelativeToolTip": "Task\\shapes\\Polygon.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAjAAAAAAAAAA==",
+              "ViewState": "AgIAAIsAAAAAAAAAAAAowJcAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-18T15:35:29.975Z"
+              "WhenOpened": "2025-05-18T15:35:29.975Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Rectangle.cs",
               "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\shapes\\Rectangle.cs",
               "RelativeDocumentMoniker": "Task\\shapes\\Rectangle.cs",
@@ -70,7 +71,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\MainWindow.xaml",
               "RelativeDocumentMoniker": "Task\\MainWindow.xaml",
@@ -82,13 +83,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "Task\\MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\MainWindow.xaml.cs",
               "RelativeToolTip": "Task\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAEkAAAAAAAAAAAAswG8AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAOcDAAAAAAAAAAAswBIEAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-18T10:04:43.035Z",
               "EditorCaption": ""

@@ -45,12 +45,22 @@
             <Image x:Name="DrawingCanvas" Stretch="None" MouseRightButtonDown="Canvas_MouseRightButtonDown" MouseLeftButtonDown="Canvas_MouseLeftButtonDown" MouseMove="Canvas_MouseMove"/>
         </Border>
 
-        <Popup x:Name="ColorPopup" Placement="MousePoint" StaysOpen="False">
+        <Popup x:Name="LineColorPopup" Placement="MousePoint" StaysOpen="False">
             <Border Background="White" BorderBrush="Black" BorderThickness="1" Padding="10" CornerRadius="8">
                 <StackPanel>
                     <TextBlock Text="Choose Color" Margin="0 0 0 5" FontWeight="Bold" HorizontalAlignment="Center"/>
-                    <xctk:ColorPicker x:Name="PopupColorPicker" Width="150" Height="30"/>
-                    <Button Content="Apply Color" Margin="0 10 0 0" Click="ApplyPopupColor_Click"/>
+                    <xctk:ColorPicker x:Name="LinePopupColorPicker" Width="150" Height="30"/>
+                    <Button Content="Apply Color" Margin="0 10 0 0" Click="ApplyLinePopupColor_Click"/>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+        <Popup x:Name="FillColorPopup" Placement="MousePoint" StaysOpen="False">
+            <Border Background="White" BorderBrush="Black" BorderThickness="1" Padding="10" CornerRadius="8">
+                <StackPanel>
+                    <TextBlock Text="Choose Color" Margin="0 0 0 5" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <xctk:ColorPicker x:Name="FillPopupColorPicker" Width="150" Height="30"/>
+                    <Button Content="Apply Color" Margin="0 10 0 0" Click="ApplyFillPopupColor_Click"/>
                 </StackPanel>
             </Border>
         </Popup>
@@ -95,7 +105,16 @@
         </StackPanel>
 
         <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center">
-            
+            <StackPanel VerticalAlignment="Center" Margin="10">
+                <Button x:Name="SaveCanvaVector" Content="Save Vector" Click="SaveCanvaVector_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="LoadCanvaVector" Content="Load Vector" Click="LoadCanvaVector_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            </StackPanel>
+
+            <StackPanel VerticalAlignment="Center" Margin="10">
+                <Button x:Name="FillColor" Content="Fill with Colors" Click="FillColor_Click" Style="{StaticResource RoundedButtonStyle}"/>
+                <Button x:Name="FillImage" Content="Fill with Image" Click="FillImage_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            </StackPanel>
+
 
             <StackPanel VerticalAlignment="Center" Margin="10">
                 <TextBlock Text="Rectangle" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
