@@ -289,5 +289,28 @@ namespace Rasterization.Tools
             }
         }
 
+        public void TryFillColor(Point click, Color color)
+        {
+            foreach (var polygon in polygons)
+            {
+                if (polygon.IsNearPolygon(click))
+                {
+                    polygon.myColor = color;
+                    polygon.FillPolygon(canvas, color);
+                    return;
+                }
+            }
+        }
+        public void TryFillImage(Point click, ImageBrush imageBrush)
+        {
+            foreach (var polygon in polygons)
+            {
+                if (polygon.IsNearPolygon(click))
+                {
+                    polygon.FillPolygon(canvas, imageBrush);
+                    return;
+                }
+            }
+        }
     }
 }

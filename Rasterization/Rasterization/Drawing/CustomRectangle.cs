@@ -12,7 +12,7 @@ namespace Rasterization.Drawing
 {
     public class CustomRectangle
     {
-        public List<Point> Points { get; set; } = new(4);
+        public List<Point> Vertices { get; set; } = new(4);
 
         public int Thickness { get; set; } = 1;
         public Color myColor { get; set; } = Colors.Black;
@@ -23,12 +23,12 @@ namespace Rasterization.Drawing
         public void DrawRectangle(Canvas canvas)
         {
             Pixels.Clear();
-            if (Points.Count != 4) return;
+            if (Vertices.Count != 4) return;
 
-            DrawEdge(canvas, Points[0], Points[1]); // top
-            DrawEdge(canvas, Points[1], Points[2]); // right
-            DrawEdge(canvas, Points[2], Points[3]); // bottom
-            DrawEdge(canvas, Points[3], Points[0]); // left
+            DrawEdge(canvas, Vertices[0], Vertices[1]); // top
+            DrawEdge(canvas, Vertices[1], Vertices[2]); // right
+            DrawEdge(canvas, Vertices[2], Vertices[3]); // bottom
+            DrawEdge(canvas, Vertices[3], Vertices[0]); // left
         }
 
         private void DrawEdge(Canvas canvas, Point start, Point end)

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 
@@ -19,8 +20,21 @@ namespace Rasterization
 
         private bool isThickening = false;
         private bool isDeleting = false;
+        
         private bool isChangingColors = false;
         private Color selectedColor = Colors.Black;
+        
+        private bool isFillingColor = false;
+        private Color selectedFillingColor = Colors.White;
+
+        private bool isFillingImage = false;
+        private ImageBrush selectedImageBrush = null;
+
+        private bool isClipping = false;
+        private CustomPolygon subject = null;
+        private CustomRectangle clip = null;
+
+
 
         // LINE
         private List<CustomLine> lines = new();
@@ -87,6 +101,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingLine = true;
             isEditingLine = false;
@@ -111,6 +127,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingLine = false;
             isEditingLine = true;
@@ -135,6 +153,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingLine = false;
             isEditingLine = false;
@@ -159,6 +179,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingLine = false;
             isEditingLine = false;
@@ -182,6 +204,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingCircle = true;
             isEditingCircle = false;
@@ -206,6 +230,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingCircle = false;
             isEditingCircle = true;
@@ -230,6 +256,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingCircle = false;
             isEditingCircle = false;
@@ -254,6 +282,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingCircle = false;
             isEditingCircle = false;
@@ -278,6 +308,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingCircle = false;
             isEditingCircle = false;
@@ -302,6 +334,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingPolygon = true;
             isMovingPolygonVertex = false;
@@ -326,6 +360,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = true;
@@ -350,6 +386,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = false;
@@ -374,6 +412,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = false;
@@ -406,6 +446,8 @@ namespace Rasterization
             isThickening = true;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = false;
@@ -429,6 +471,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = true;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = false;
@@ -452,6 +496,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = true;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingPolygon = false;
             isMovingPolygonVertex = false;
@@ -643,6 +689,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingLine = false;
             isEditingLine = false;
@@ -669,6 +717,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingLine = false;
             isEditingLine = false;
@@ -695,6 +745,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingLine = false;
             isEditingLine = false;
@@ -721,6 +773,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingLine = false;
             isEditingLine = false;
@@ -748,6 +802,8 @@ namespace Rasterization
             isThickening = false;
             isDeleting = false;
             isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
 
             isDrawingLine = false;
             isEditingLine = false;
@@ -768,6 +824,89 @@ namespace Rasterization
             isEditingEdgeRectangle = false;
             isMovingRectangle = true;
         }
+        private void FillColor_Click(object sender, RoutedEventArgs e)
+        {
+            isThickening = false;
+            isDeleting = false;
+            isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = false;
+
+            isDrawingLine = false;
+            isEditingLine = false;
+
+            isDrawingCircle = false;
+            isEditingCircle = false;
+            isMovingCircle = false;
+
+            isDrawingPolygon = false;
+            isMovingPolygonVertex = false;
+            isMovingPolygonEdge = false;
+            isMovingPolygon = false;
+
+            isDrawingPacMan = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = false;
+
+            ColorPopupFillPolgon.IsOpen = true;
+            isFillingColor = true;
+        }
+
+        private void ApplyPopupColorFillPolgon_Click(object sender, RoutedEventArgs e)
+        {
+            if (PopupColorPickerFillPolgon.SelectedColor.HasValue)
+            {
+                selectedFillingColor = PopupColorPickerFillPolgon.SelectedColor.Value;
+            }
+
+            ColorPopupFillPolgon.IsOpen = false;
+        }
+
+        private void FillImage_Click(object sender, RoutedEventArgs e)
+        {
+            isThickening = false;
+            isDeleting = false;
+            isChangingColors = false;
+            isFillingColor = false;
+            isFillingImage = true;
+
+            isDrawingLine = false;
+            isEditingLine = false;
+
+            isDrawingCircle = false;
+            isEditingCircle = false;
+            isMovingCircle = false;
+
+            isDrawingPolygon = false;
+            isMovingPolygonVertex = false;
+            isMovingPolygonEdge = false;
+            isMovingPolygon = false;
+
+            isDrawingPacMan = false;
+
+            isDrawingRectangle = false;
+            isEditingVertexRectangle = false;
+            isEditingEdgeRectangle = false;
+            isMovingRectangle = true;
+
+            var dialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Image files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                BitmapImage bitmap = new BitmapImage(new Uri(dialog.FileName));
+                selectedImageBrush = new ImageBrush(bitmap)
+                {
+                    Stretch = Stretch.Fill
+                };
+            }
+        }
+
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point click = e.GetPosition(DrawingCanvas);
@@ -890,7 +1029,204 @@ namespace Rasterization
                 polygonTool.TryChangeColor(click, selectedColor);
                 rectangleTool.TryChangeColor(click, selectedColor);
             }
+            else if(isFillingColor)
+            {
+                polygonTool.TryFillColor(click, selectedFillingColor);
+            }
+            else if (isFillingImage)
+            {
+                polygonTool.TryFillImage(click, selectedImageBrush);
+            }
+            else if (isClipping)
+            {
+                if (subject == null)
+                {
+                    foreach (var polygon in polygons.ToList())
+                    {
+                        if (polygon.IsNearPolygon(click))
+                            subject = polygon;
+                    }
+                }
+                else
+                {
+                    foreach (var rectangle in rectangles.ToList())
+                    {
+                        if (rectangle.IsNearRectangle(click))
+                            clip = rectangle;
+                    }
+                }
+            }
         }
+
+        private void SaveCanvaVector_Click(object sender, RoutedEventArgs e)
+        {
+            var saveDialog = new SaveFileDialog
+            {
+                Filter = "JSON Files (*.json)|*.json",
+                FileName = "canvas_vector.json"
+            };
+
+            if (saveDialog.ShowDialog() == true)
+            {
+                var vectorData = new
+                {
+                    Lines = lines.Select(l => new
+                    {
+                        l.Start,
+                        l.End,
+                        l.Thickness,
+                        Color = l.myColor.ToString(),
+                        l.UseAntialiasing
+                    }).ToList(),
+
+                    Circles = circles.Select(c => new
+                    {
+                        c.Start,
+                        c.Radius,
+                        c.Thickness,
+                        Color = c.myColor.ToString(),
+                        c.UseAntialiasing
+                    }).ToList(),
+
+                    Polygons = polygons.Select(p => new
+                    {
+                        Vertices = p.Vertices,
+                        p.Thickness,
+                        Color = p.myColor.ToString(),
+                        p.UseAntialiasing,
+                        FillColor = p.myColor.ToString(),
+                        FillImageUri = p.FillImageUri
+                    }).ToList(),
+
+                    Rectangles = rectangles.Select(r => new
+                    {
+                        Points = r.Vertices,
+                        r.Thickness,
+                        Color = r.myColor.ToString(),
+                        r.UseAntialiasing
+                    }).ToList()
+                };
+
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true
+                };
+
+                string json = JsonSerializer.Serialize(vectorData, options);
+                File.WriteAllText(saveDialog.FileName, json);
+            }
+        }
+
+        private void LoadCanvaVector_Click(object sender, RoutedEventArgs e)
+        {
+            var openDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "JSON Files (*.json)|*.json"
+            };
+
+            if (openDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    string json = File.ReadAllText(openDialog.FileName);
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+
+                    var saved = JsonSerializer.Deserialize<Shapes>(json, options);
+                    if (saved == null) return;
+
+                    // Clear all canvases/tools
+                    lineTool.ClearCanvas();
+                    circleTool.ClearCanvas();
+                    polygonTool.ClearCanvas();
+                    rectangleTool.ClearCanvas();
+
+                    // Load lines
+                    foreach (var line in saved.Lines)
+                    {
+                        lineTool.Lines.Add(line);
+                        line.DrawLine(DrawingCanvas);
+                    }
+
+                    // Load circles
+                    foreach (var circle in saved.Circles)
+                    {
+                        circleTool.Circles.Add(circle);
+                        circle.DrawCircle(DrawingCanvas);
+                    }
+
+                    // Load polygons
+                    foreach (var poly in saved.Polygons)
+                    {
+
+                        var polygon = new CustomPolygon
+                        {
+                            Vertices = poly.Vertices,
+                            numVertices = poly.Vertices.Count,
+                            Thickness = poly.Thickness,
+                            myColor = poly.myColor,
+                            UseAntialiasing = poly.UseAntialiasing,
+                        };
+                        MessageBox.Show(poly.FillColorString);
+
+                        // Fill
+                        if (!string.IsNullOrEmpty(poly.FillImageUri))
+                        {
+                            //polygon.SetFillImage(poly.FillImageUri);
+                            //polygon.FillPolygon(DrawingCanvas, polygon.FillBrush);
+                            polygon.SetFillImage(poly.FillImageUri);
+                            polygon.DrawImageClippedPolygon(DrawingCanvas);
+
+                        }
+                        else if (!string.IsNullOrEmpty(poly.FillColorString))
+                        {
+                            if (poly.FillColor.HasValue)
+                            {
+                                polygon.FillPolygon(DrawingCanvas, poly.FillColor.Value);
+                            }
+                        }
+
+                        polygon.DrawPolygon(DrawingCanvas);
+                        polygonTool.Polygons.Add(polygon);
+                    }
+
+                    // Load rectangles
+                    foreach (var rect in saved.Rectangles)
+                    {
+                        rectangleTool.Rectangles.Add(rect);
+                        rect.DrawRectangle(DrawingCanvas);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error loading file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void ClipPolygon_Click(object sender, RoutedEventArgs e)
+        {
+            isClipping = true;
+            if (polygonTool.Polygons.Count == 0 || rectangleTool.Rectangles.Count == 0)
+            {
+                MessageBox.Show("You must have at least one polygon and one rectangle.");
+                return;
+            }
+
+            double minX = clip.Vertices.Min(p => p.X);
+            double maxX = clip.Vertices.Max(p => p.X);
+            double minY = clip.Vertices.Min(p => p.Y);
+            double maxY = clip.Vertices.Max(p => p.Y);
+            Rect clipRect = new Rect(minX, minY, maxX - minX, maxY - minY);
+
+            var clipping = new Clipping();
+            Color clipColor = Colors.Red;
+
+            clipping.DrawClippedSegments(DrawingCanvas, subject, clipRect, clipColor);
+        }
+
 
     }
 }

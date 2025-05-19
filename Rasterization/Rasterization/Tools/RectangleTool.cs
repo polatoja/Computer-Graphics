@@ -44,7 +44,7 @@ namespace Rasterization.Tools
                 Point Point4 = new Point(firstPoint.Value.X, click.Y);
                 var rect = new CustomRectangle
                 {
-                    Points = new() {Point1,Point2, Point3,Point4 },
+                    Vertices = new() {Point1,Point2, Point3,Point4 },
                     Thickness = 1,
                     UseAntialiasing = UseAntialiasing
                 };
@@ -60,7 +60,7 @@ namespace Rasterization.Tools
             {
                 for(int i = 0; i < 4; i++)
                 {
-                    if ((rectangle.Points[i] - click).Length <= 10)
+                    if ((rectangle.Vertices[i] - click).Length <= 10)
                     {
                         selectedRectangle = rectangle;
                         selectedVertexIndex = i;
@@ -78,7 +78,7 @@ namespace Rasterization.Tools
             {
                 for(int i = 0; i < 4; i++)
                 {
-                    if (IsNearEdge(rectangle.Points[i], rectangle.Points[(i + 1) % 4], click))
+                    if (IsNearEdge(rectangle.Vertices[i], rectangle.Vertices[(i + 1) % 4], click))
                     {
                         selectedRectangle = rectangle;
                         selectedEdge = (i, (i + 1) % 4);
@@ -115,7 +115,7 @@ namespace Rasterization.Tools
             {
                 for(int i = 0; i < 4; i++)
                 {
-                    selectedRectangle.Points[i] += delta;
+                    selectedRectangle.Vertices[i] += delta;
                 }
                 dragOffset = current;
                 selectedRectangle.RedrawRectangle(canvas);
@@ -123,20 +123,30 @@ namespace Rasterization.Tools
             else if (movingVertex && selectedVertexIndex.HasValue)
             {
                 int id = selectedVertexIndex.Value;
-                var pts = selectedRectangle.Points;
+                var pts = selectedRectangle.Vertices;
 
                 pts[id] += delta;
 
-                pts[(id + 1) % 4] = new Point(pts[(id + 1) % 4].X, pts[id].Y);
-                pts[(id + 3) % 4] = new Point(pts[id].X, pts[(id + 3) % 4].Y);
-   
+                if(id % 2 == 0)
+                {
+                    pts[(id + 1) % 4] = new Point(pts[(id + 1) % 4].X, pts[id].Y);
+                    pts[(id + 3) % 4] = new Point(pts[id].X, pts[(id + 3) % 4].Y);
+                }
+                else
+                {
+                    pts[(id + 1) % 4] = new Point(pts[id].X, pts[(id + 1) % 4].Y);
+                    pts[(id + 3) % 4] = new Point(pts[(id + 3) % 4].X, pts[id].Y);
+                }
+
+
                 dragOffset = current;
                 selectedRectangle.RedrawRectangle(canvas);
             }
+
             else if (movingEdge && selectedEdge.HasValue)
             {
                 var (id1, id2) = selectedEdge.Value;
-                var pts = selectedRectangle.Points;
+                var pts = selectedRectangle.Vertices;
 
                 if (id1 % 2 == 0)
                 {

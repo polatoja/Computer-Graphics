@@ -1,0 +1,101 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\drawing\\task\\task\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|solutionrelative:task\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\drawing\\task\\task\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|solutionrelative:task\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\drawing\\task\\task\\shapes\\rectangle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|solutionrelative:task\\shapes\\rectangle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\drawing\\task\\task\\shapes\\polygon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|solutionrelative:task\\shapes\\polygon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|c:\\users\\majat\\dokumenty\\github\\computer-graphics\\drawing\\task\\task\\shapes\\line.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{641C4E8D-17D3-4660-BE93-38879DA8BF3C}|Task\\Task.csproj|solutionrelative:task\\shapes\\line.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Polygon.cs",
+              "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\shapes\\Polygon.cs",
+              "RelativeDocumentMoniker": "Task\\shapes\\Polygon.cs",
+              "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\shapes\\Polygon.cs",
+              "RelativeToolTip": "Task\\shapes\\Polygon.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T15:35:29.975Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Rectangle.cs",
+              "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\shapes\\Rectangle.cs",
+              "RelativeDocumentMoniker": "Task\\shapes\\Rectangle.cs",
+              "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\shapes\\Rectangle.cs",
+              "RelativeToolTip": "Task\\shapes\\Rectangle.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T15:34:36.458Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Line.cs",
+              "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\shapes\\Line.cs",
+              "RelativeDocumentMoniker": "Task\\shapes\\Line.cs",
+              "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\shapes\\Line.cs",
+              "RelativeToolTip": "Task\\shapes\\Line.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAkwDYAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T10:10:19.385Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "Task\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\MainWindow.xaml*",
+              "RelativeToolTip": "Task\\MainWindow.xaml*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-05-18T10:04:50.425Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Task\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\majat\\Dokumenty\\GitHub\\Computer-Graphics\\Drawing\\Task\\Task\\MainWindow.xaml.cs",
+              "RelativeToolTip": "Task\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAGYAAAAAAAAAAAA9wG8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-18T10:04:43.035Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
