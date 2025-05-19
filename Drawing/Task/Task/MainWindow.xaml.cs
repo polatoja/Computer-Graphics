@@ -69,6 +69,7 @@ namespace Task
         private Color selectedLineColor = Colors.Black;
         private Color? selectedFillColor = null;
         private BitmapImage? selectedFillImage { get; set; }
+        private string? selectedFillImageUri { get; set; }
 
         private EditorMode currentMode = EditorMode.None;
 
@@ -102,6 +103,7 @@ namespace Task
             LineColorPopup.IsOpen = false;
         }
         private void DeleteShape_Click(object sender, RoutedEventArgs e) => currentMode = EditorMode.Delete;
+        private void ClipPolygon_Click(object sender, RoutedEventArgs e) => currentMode = EditorMode.ClipPolygon;
 
         private void DrawLine_Click(object sender, RoutedEventArgs e) => currentMode = EditorMode.DrawLine;
         private void EditLine_Click(object sender, RoutedEventArgs e) => currentMode = EditorMode.EditLine;
@@ -153,6 +155,7 @@ namespace Task
                     image.EndInit();
 
                     selectedFillImage = image;
+                    selectedFillImageUri = imageUri.AbsolutePath;
                 }
                 catch (Exception ex)
                 {
@@ -237,51 +240,13 @@ namespace Task
 
             if (saveDialog.ShowDialog() == true)
             {
-                var vectorData = new
-                {
-                    Lines = shapes.OfType<Line>().Select(l => new
-                    {
-                        l.Start,
-                        l.End,
-                        l.Thickness,
-                        Color = l.Color.ToString(),
-                        l.UseAntialiasing
-                    }).ToList(),
-
-                    Circles = shapes.OfType<Circle>().Select(c => new
-                    {
-                        Start = c.Start,
-                        c.Radius,
-                        c.Thickness,
-                        Color = c.Color.ToString(),
-                        c.UseAntialiasing
-                    }).ToList(),
-
-                    Polygons = shapes.OfType<Polygon>().Select(p => new
-                    {
-                        Vertices = p.Vertices,
-                        p.Thickness,
-                        Color = p.Color.ToString(),
-                        p.UseAntialiasing,
-                        //FillColor = p.Color.ToString(),
-                        //FillImageUri = ""
-                    }).ToList(),
-
-                    Rectangles = shapes.OfType<Rectangle>().Select(r => new
-                    {
-                        Vertices = r.Vertices,
-                        r.Thickness,
-                        Color = r.Color.ToString(),
-                        r.UseAntialiasing
-                    }).ToList()
-                };
-
                 var options = new JsonSerializerOptions
                 {
-                    WriteIndented = true
+                    WriteIndented = true,
+                    IncludeFields = true
                 };
 
-                string json = JsonSerializer.Serialize(vectorData, options);
+                string json = JsonSerializer.Serialize(shapes, options);
                 File.WriteAllText(saveDialog.FileName, json);
             }
         }
@@ -299,66 +264,17 @@ namespace Task
                     string json = File.ReadAllText(openDialog.FileName);
                     var options = new JsonSerializerOptions
                     {
-                        PropertyNameCaseInsensitive = true
+                        IncludeFields = true
                     };
+                    var data = JsonSerializer.Deserialize<List<Shapes>>(json, options);
 
-                    var document = JsonDocument.Parse(json);
-                    shapes.Clear();
-
-                    foreach (var element in document.RootElement.GetProperty("Lines").EnumerateArray())
+                    if(data != null)
                     {
-                        var line = new Line
-                        {
-                            Start = element.GetProperty("Start").Deserialize<Point>(),
-                            End = element.GetProperty("End").Deserialize<Point>(),
-                            Thickness = element.GetProperty("Thickness").GetInt32(),
-                            UseAntialiasing = element.GetProperty("UseAntialiasing").GetBoolean(),
-                            Color = (Color)ColorConverter.ConvertFromString(element.GetProperty("Color").GetString())
-                        };
-                        shapes.Add(line);
+                        ClearBitmap();
+                        shapes = data;
+                        foreach (var shape in shapes)
+                            shape.Draw(bitmap);
                     }
-
-                    foreach (var element in document.RootElement.GetProperty("Circles").EnumerateArray())
-                    {
-                        var circle = new Circle
-                        {
-                            Start = element.GetProperty("Start").Deserialize<Point>(),
-                            Radius = element.GetProperty("Radius").GetInt32(),
-                            Thickness = element.GetProperty("Thickness").GetInt32(),
-                            UseAntialiasing = element.GetProperty("UseAntialiasing").GetBoolean(),
-                            Color = (Color)ColorConverter.ConvertFromString(element.GetProperty("Color").GetString())
-                        };
-                        shapes.Add(circle);
-                    }
-
-                    foreach (var element in document.RootElement.GetProperty("Polygons").EnumerateArray())
-                    {
-                        var poly = new Polygon
-                        {
-                            Vertices = JsonSerializer.Deserialize<List<Point>>(element.GetProperty("Vertices").GetRawText()),
-                            Thickness = element.GetProperty("Thickness").GetInt32(),
-                            UseAntialiasing = element.GetProperty("UseAntialiasing").GetBoolean(),
-                            Color = (Color)ColorConverter.ConvertFromString(element.GetProperty("Color").GetString()),
-                            numVertices = JsonSerializer.Deserialize<List<Point>>(element.GetProperty("Vertices").GetRawText()).Count
-                        };
-                        shapes.Add(poly);
-                    }
-
-                    foreach (var element in document.RootElement.GetProperty("Rectangles").EnumerateArray())
-                    {
-                        var rect = new Rectangle
-                        {
-                            Vertices = JsonSerializer.Deserialize<List<Point>>(element.GetProperty("Points").GetRawText()),
-                            Thickness = element.GetProperty("Thickness").GetInt32(),
-                            UseAntialiasing = element.GetProperty("UseAntialiasing").GetBoolean(),
-                            Color = (Color)ColorConverter.ConvertFromString(element.GetProperty("Color").GetString())
-                        };
-                        shapes.Add(rect);
-                    }
-
-                    ClearBitmap();
-                    foreach (var shape in shapes)
-                        shape.Draw(bitmap);
                 }
                 catch (Exception ex)
                 {
@@ -502,12 +418,40 @@ namespace Task
                     if (shape.IsNearShape(click) && shape is Polygon poly)
                     {
                         poly.FillImage = selectedFillImage;
+                        poly.FillImageUri = selectedFillImageUri;
                         break;
                     }
                 }
                 ClearBitmap();
                 foreach (var shape in shapes)
                     shape.Draw(bitmap);
+            }
+            else if (currentMode == EditorMode.ClipPolygon)
+            {
+                foreach (var shape in shapes.ToList())
+                {
+                    if (shape.IsNearShape(click) && shape is Polygon poly)
+                    {
+                        currentPolygon = poly;
+                        if(currentRectangle != null)
+                            break;
+                    }
+                    if (shape.IsNearShape(click) && shape is Rectangle rect)
+                    {
+                        currentRectangle = rect;
+                        if (currentPolygon != null)
+                            break;
+                    }
+                }
+                if (currentPolygon != null && currentRectangle != null)
+                {
+                    var clipper = new Clipping();
+                    currentPolygon.clippedRectangle = currentRectangle;
+                    clipper.DrawClippedSegments(bitmap, currentPolygon);
+
+                    currentPolygon = null;
+                    currentRectangle = null;
+                }
             }
         }
 

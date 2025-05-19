@@ -2,14 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace Task.shapes
 {
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
+    [JsonDerivedType(typeof(Line), "line")]
+    [JsonDerivedType(typeof(Circle), "circle")]
+    [JsonDerivedType(typeof(Polygon), "polygon")]
+    [JsonDerivedType(typeof(Rectangle), "rectangle")]
     public abstract class Shapes
     {
         public int Thickness { get; set; } = 1;
@@ -77,7 +84,7 @@ namespace Task.shapes
             bmp.Unlock();
         }
 
-        public void DrawLine(WriteableBitmap bitmap, Point Start, Point End)
+        public void DrawLine(WriteableBitmap bitmap, Point Start, Point End, Color LineColor, int LineThickness)
         {
             int x0 = (int)Start.X;
             int y0 = (int)Start.Y;
@@ -102,7 +109,7 @@ namespace Task.shapes
                 int incrE = 2 * dy;
                 int incrNE = 2 * (dy - dx);
 
-                DrawPixel(bitmap, x, y, Color, Thickness);
+                DrawPixel(bitmap, x, y, LineColor, LineThickness);
 
                 for (int i = 0; i < dx; i++)
                 {
@@ -117,7 +124,7 @@ namespace Task.shapes
                         x += xStep;
                         y += yStep;
                     }
-                    DrawPixel(bitmap, x, y, Color, Thickness);
+                    DrawPixel(bitmap, x, y, LineColor, LineThickness);
                 }
             }
             else
@@ -126,7 +133,7 @@ namespace Task.shapes
                 int incrN = 2 * dx;
                 int incrNE = 2 * (dx - dy);
 
-                DrawPixel(bitmap, x, y, Color, Thickness);
+                DrawPixel(bitmap, x, y, LineColor, LineThickness);
 
                 for (int i = 0; i < dy; i++)
                 {
@@ -141,7 +148,7 @@ namespace Task.shapes
                         x += xStep;
                         y += yStep;
                     }
-                    DrawPixel(bitmap, x, y, Color, Thickness);
+                    DrawPixel(bitmap, x, y, LineColor, LineThickness);
                 }
             }
         }

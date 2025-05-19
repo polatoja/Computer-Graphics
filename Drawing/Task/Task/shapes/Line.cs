@@ -31,7 +31,7 @@ namespace Task.shapes
             }
             else
             {
-                DrawLine(bitmap, Start, End);
+                DrawLine(bitmap, Start, End, Color, Thickness);
             }
         }
         public override void DeleteShape(List<Shapes> shapes, Shapes lineToDelete, WriteableBitmap bitmap)

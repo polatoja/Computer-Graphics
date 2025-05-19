@@ -32,10 +32,10 @@ namespace Task.shapes
             {
                 if (Vertices.Count != 4) return;
 
-                DrawLine(bitmap, Vertices[0], Vertices[1]); // top
-                DrawLine(bitmap, Vertices[1], Vertices[2]); // right
-                DrawLine(bitmap, Vertices[2], Vertices[3]); // bottom
-                DrawLine(bitmap, Vertices[3], Vertices[0]); // left
+                DrawLine(bitmap, Vertices[0], Vertices[1], Color, Thickness); // top
+                DrawLine(bitmap, Vertices[1], Vertices[2], Color, Thickness); // right
+                DrawLine(bitmap, Vertices[2], Vertices[3], Color, Thickness); // bottom
+                DrawLine(bitmap, Vertices[3], Vertices[0], Color, Thickness); // left
             }
         }
 

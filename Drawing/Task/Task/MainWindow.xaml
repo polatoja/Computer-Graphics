@@ -115,6 +115,9 @@
                 <Button x:Name="FillImage" Content="Fill with Image" Click="FillImage_Click" Style="{StaticResource RoundedButtonStyle}"/>
             </StackPanel>
 
+            <StackPanel VerticalAlignment="Center" Margin="10">
+                <Button x:Name="Clip" Content="Clip Polygon" Click="ClipPolygon_Click" Style="{StaticResource RoundedButtonStyle}"/>
+            </StackPanel>
 
             <StackPanel VerticalAlignment="Center" Margin="10">
                 <TextBlock Text="Rectangle" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
